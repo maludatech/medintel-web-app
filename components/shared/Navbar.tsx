@@ -1,13 +1,13 @@
 "use client";
 
-import { Menu, X } from "lucide-react";
+import React from "react";
 import { useState } from "react";
 import Link from "next/link";
 import { ThemeToggle } from "./ThemeToggle";
-import { Button } from "../ui/button";
 import { APP_NAME } from "@/lib/constants";
+import { MobileSidebar } from "./MobileSidebar";
 
-const Navbar = () => {
+export const Navbar: React.FC = () => {
   const [open, setOpen] = useState(false);
 
   const toggleMenu = () => setOpen(!open);
@@ -46,14 +46,7 @@ const Navbar = () => {
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center gap-2">
           <ThemeToggle />
-          <Button
-            variant="ghost"
-            className="p-2 rounded-md hover:bg-muted"
-            aria-label="Toggle Menu"
-            onClick={toggleMenu}
-          >
-            {open ? <X size={22} /> : <Menu size={22} />}
-          </Button>
+          <MobileSidebar />
         </div>
       </nav>
 
@@ -77,5 +70,3 @@ const Navbar = () => {
     </header>
   );
 };
-
-export default Navbar;

@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
-import { useThemeColor } from "@/stores/useThemeColor";
+import { useThemeStore } from "@/stores/useThemeStore";
 
 const themeColors: Record<string, string> = {
   "theme-blue": "oklch(0.705 0.212 242)",
@@ -24,7 +24,7 @@ const themeColors: Record<string, string> = {
 };
 
 export const ThemeColorSwitcher: React.FC = () => {
-  const { themeColor, setThemeColor } = useThemeColor();
+  const { themeName, setThemeColor } = useThemeStore();
 
   return (
     <div className="relative bg-background">
@@ -36,7 +36,7 @@ export const ThemeColorSwitcher: React.FC = () => {
         <DropdownMenuContent className="w-56 ">
           <DropdownMenuLabel>Theme</DropdownMenuLabel>
           <DropdownMenuRadioGroup
-            value={themeColor}
+            value={themeName}
             onValueChange={setThemeColor}
           >
             {Object.entries(themeColors).map(([colorName, colorCode]) => (
