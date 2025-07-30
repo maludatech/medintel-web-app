@@ -112,6 +112,31 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+body.theme-blue {
+  --primary: oklch(0.705 0.212 242);
+}
+body.theme-aqua {
+  --primary: oklch(0.8 0.23 185);
+}
+body.theme-purple {
+  --primary: oklch(0.65 0.2 300);
+}
+body.theme-red {
+  --primary: oklch(0.65 0.22 27);
+}
+body.theme-orange {
+  --primary: oklch(0.78 0.22 65);
+}
+body.theme-green {
+  --primary: oklch(0.75 0.2 142);
+}
+body.theme-rose {
+  --primary: oklch(0.72 0.23 20);
+}
+body.theme-yellow {
+  --primary: oklch(0.95 0.2 100);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
