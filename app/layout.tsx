@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Rubik } from "next/font/google";
 import "./globals.css";
 import { APP_DESCRIPTION, APP_NAME, APP_SLOGAN } from "@/lib/constants";
-import { ClientThemeProvider } from "../components/ui/shared/ClientThemeProvider";
+import { ClientThemeProvider } from "../components/shared/ClientThemeProvider";
+import Navbar from "@/components/shared/Navbar";
+import { Toaster } from "@/components/ui/sonner";
 
 const rubik = Rubik({
   subsets: ["latin"],
@@ -26,7 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${rubik.variable} antialiased`}>
-        <ClientThemeProvider> {children}</ClientThemeProvider>
+        <ClientThemeProvider>
+          <Navbar />
+          {children}
+          <Toaster richColors />
+        </ClientThemeProvider>
       </body>
     </html>
   );
