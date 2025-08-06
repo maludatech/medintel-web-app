@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ThemeToggle } from "./ThemeToggle";
 import { APP_NAME } from "@/lib/constants";
 import { MobileSidebar } from "./MobileSidebar";
+import { ThemeColorSwitcher } from "./ThemeColorPicker";
 
 export const Navbar: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -40,6 +41,7 @@ export const Navbar: React.FC = () => {
               {link.label}
             </Link>
           ))}
+          <ThemeColorSwitcher />
           <ThemeToggle />
         </div>
 

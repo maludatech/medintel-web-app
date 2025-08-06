@@ -47,7 +47,7 @@ export const ThemeColorSwitcher: React.FC = () => {
               >
                 <div
                   className={`h-4 w-4 rounded-full transition-transform hover:scale-110 mr-2 ring-2 ${
-                    themeColor === colorName ? "ring-ring" : "ring-transparent"
+                    themeName === colorName ? "ring-ring" : "ring-transparent"
                   }`}
                   style={{ backgroundColor: colorCode }}
                 />
