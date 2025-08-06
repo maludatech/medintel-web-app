@@ -13,7 +13,7 @@ export const CTA: React.FC = () => {
         <p className="text-muted-foreground text-lg mb-6">
           Sign up now and start predicting diseases with AI.
         </p>
-        <Button className="text-base px-6 py-3">Get Started</Button>
+        <Button className="text-base px-6 py-3 cursor-pointer">Get Started</Button>
       </div>
     </section>
   );

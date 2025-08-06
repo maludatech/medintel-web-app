@@ -30,8 +30,8 @@ export const Hero: React.FC = () => {
           </p>
 
           <div className="flex gap-4">
-            <Button className="text-base px-6 py-3">Get Started</Button>
-            <Button variant="outline" className="text-base px-6 py-3">
+            <Button className="text-base px-6 py-3 cursor-pointer">Get Started</Button>
+            <Button variant="outline" className="text-base px-6 py-3 cursor-pointer">
               Learn More
             </Button>
           </div>

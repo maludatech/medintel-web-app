@@ -3,6 +3,7 @@
 import React from "react";
 import { useState } from "react";
 import Link from "next/link";
+import { BrainCircuit } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { APP_NAME } from "@/lib/constants";
 import { MobileSidebar } from "./MobileSidebar";
@@ -10,8 +11,6 @@ import { ThemeColorSwitcher } from "./ThemeColorPicker";
 
 export const Navbar: React.FC = () => {
   const [open, setOpen] = useState(false);
-
-  const toggleMenu = () => setOpen(!open);
 
   const navLinks = [
     { href: "/", label: "Home" },
@@ -25,9 +24,16 @@ export const Navbar: React.FC = () => {
         {/* Brand */}
         <Link
           href="/"
-          className="text-2xl font-bold tracking-tight hover:opacity-90 transition-opacity"
+            className="group flex items-center gap-2 rounded-xl px-2 py-1"
         >
-          {APP_NAME}
+         <BrainCircuit
+            size={36}
+            strokeWidth={1.75}
+            className="text-primary transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110"
+          />
+          <span className="text-xl font-bold tracking-wide text-foreground">
+            {APP_NAME}
+          </span>
         </Link>
 
         {/* Desktop Links */}
@@ -36,7 +42,7 @@ export const Navbar: React.FC = () => {
             <Link
               key={link.href}
               href={link.href}
-              className="relative text-sm font-medium text-foreground hover:text-primary transition-colors"
+              className="relative text-lg font-medium text-foreground hover:text-primary transition-colors"
             >
               {link.label}
             </Link>
@@ -62,7 +68,7 @@ export const Navbar: React.FC = () => {
           <Link
             key={link.href}
             href={link.href}
-            className="block py-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
+            className="block py-2 text-lg font-medium text-foreground hover:text-primary transition-colors"
             onClick={() => setOpen(false)}
           >
             {link.label}
