@@ -18,8 +18,6 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
-import { ThemeToggle } from "./ThemeToggle";
-import { ThemeColorSwitcher } from "./ThemeColorPicker";
 import { Button } from "../ui/button";
 import { APP_DESCRIPTION, APP_NAME } from "@/lib/constants";
 
@@ -55,7 +53,7 @@ export const MobileSidebar: React.FC = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <CgMenuRight className="text-muted-foreground text-3xl cursor-pointer" />
+        <CgMenuRight className="text-black text-3xl cursor-pointer" />
       </SheetTrigger>
       <SheetContent
         side="left"
@@ -81,23 +79,19 @@ export const MobileSidebar: React.FC = () => {
           </div>
 
           <div className="flex flex-col gap-4 px-6">
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-3">
-                {socialIcons.map((icon, index) => (
-                  <Link
-                    href={icon.link}
-                    key={index}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:scale-110 transition-transform"
-                  >
-                    {icon.icon}
-                  </Link>
-                ))}
-              </div>
-              <ThemeToggle />
+            <div className="flex items-center gap-3">
+              {socialIcons.map((icon, index) => (
+                <Link
+                  href={icon.link}
+                  key={index}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:scale-110 transition-transform"
+                >
+                  {icon.icon}
+                </Link>
+              ))}
             </div>
-            <ThemeColorSwitcher />
           </div>
           <Separator className="w-full" />
           <div className="px-6 flex flex-col gap-3">
