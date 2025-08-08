@@ -14,7 +14,7 @@ export const Hero: React.FC = () => {
     >
       <div className="container mx-auto pt-16 flex flex-col md:flex-row items-center justify-between gap-10">
         {/* Left Side */}
-        <div className="max-w-xl px-6 md:px-12">
+        <div className="max-w-xl px-6 md:pb-2 md:px-12">
           <div className="w-fit flex items-center mb-6 text-muted-foreground border border-muted-foreground rounded-full p-2.5">
             <CircleSmall
               className="text-[#1E471A] fill-[#1E471A] mr-2"
