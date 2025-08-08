@@ -32,7 +32,7 @@ export const HowItWorks: React.FC = () => {
   ];
 
   return (
-    <section className="w-full py-8">
+    <section className="w-full pt-16">
       <div className="container mx-auto flex flex-col gap-8 px-6 md:px-12">
         {/* Section Header */}
         <div className="flex flex-col gap-1 justify-center items-center text-center">

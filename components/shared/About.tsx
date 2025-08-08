@@ -34,7 +34,7 @@ export const About: React.FC = () => {
   ];
 
   return (
-    <section className="w-full py-16">
+    <section className="w-full pt-16">
       <div className="container mx-auto flex flex-col gap-12 px-6 md:px-12">
         {/* First container */}
         <div className="flex flex-col gap-2">
