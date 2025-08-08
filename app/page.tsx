@@ -1,9 +1,10 @@
-import { About } from "@/components/shared/About";
-import { CTA } from "@/components/shared/CTA";
-import { Features } from "@/components/shared/Features";
-import { Footer } from "@/components/shared/Footer";
+"use client";
 import { Hero } from "@/components/shared/Hero";
+import { About } from "@/components/shared/About";
 import { HowItWorks } from "@/components/shared/HowItWorks";
+import { Testimonies } from "@/components/shared/Testimonies";
+import { NewsLetter } from "@/components/shared/Newsletter";
+import { Footer } from "@/components/shared/Footer";
 
 export default function Home() {
   return (
@@ -11,8 +12,8 @@ export default function Home() {
       <Hero />
       <About />
       <HowItWorks />
-      <Features />
-      <CTA />
+      <Testimonies />
+      <NewsLetter />
       <Footer />
     </main>
   );
