@@ -11,7 +11,7 @@ export const Testimonies: React.FC = () => {
         <div className="max-w-xl px-6 md:pb-2 md:px-12">
           <div className="w-fit flex items-center mb-6 text-muted-foreground border border-muted-foreground rounded-full p-2.5">
             <CircleSmall
-              className="text-[#1E471A] fill-[#1E471A] mr-2"
+              className="text-[#1E471A] fill-[#1E471A] mr-1"
               size={14}
             />
             <h2 className="text-[#1E471A] text-xs font-semibold">

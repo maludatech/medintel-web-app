@@ -55,7 +55,7 @@ export const HowItWorks: React.FC = () => {
                   alt={step.title}
                   width={500}
                   height={500}
-                  className="object-contain  w-full h-auto"
+                  className="object-contain w-full h-auto"
                   sizes="(max-width: 768px) 100vw, 300px"
                 />
               </div>
