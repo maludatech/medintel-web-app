@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 
 export const NewsLetter: React.FC = () => {
   return (
-    <section className="w-full pt-16">
+    <section className="w-full py-16">
       <div className="container mx-auto flex flex-col justify-center items-center w-full gap-6 px-6 md:px-12">
         <div className="flex flex-col gap-2 items-center justify-center">
           <h1 className="text-3xl font-bold text-[#0B1909]">
