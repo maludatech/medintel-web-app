@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { CircleSmall } from "lucide-react";
+import images from "@/public/assets/images";
 
 export const Hero: React.FC = () => {
   return (
@@ -45,7 +46,7 @@ export const Hero: React.FC = () => {
         {/* Right Side */}
         <div className="relative w-full h-full max-w-2xl">
           <Image
-            src="/assets/images/hero-image.png"
+            src={images.hero}
             alt="AI Diagnosis Hero Image"
             width={600}
             height={600}
