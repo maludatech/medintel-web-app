@@ -21,30 +21,37 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "../ui/button";
 import { APP_DESCRIPTION, APP_NAME } from "@/lib/constants";
 
+const navLinks = [
+  { href: "/", label: "Home" },
+  { href: "#about", label: "About" },
+  { href: "/predict", label: "Predict" },
+  { href: "#contact", label: "Contact" },
+];
+
 const socialIcons = [
   {
     platform: "facebook",
-    icon: <FaFacebookF className="text-primary text-[18px]" />,
+    icon: <FaFacebookF className="text-[#0B1909] text-[18px]" />,
     link: "https://facebook.com/maludatech",
   },
   {
     platform: "twitter",
-    icon: <FaTwitter className="text-primary text-[18px]" />,
+    icon: <FaTwitter className="text-[#0B1909] text-[18px]" />,
     link: "https://x.com/maludatechdev",
   },
   {
     platform: "telegram",
-    icon: <FaTelegramPlane className="text-primary text-[18px]" />,
+    icon: <FaTelegramPlane className="text-[#0B1909] text-[18px]" />,
     link: "https://t.me/maludatechdev",
   },
   {
     platform: "linkedin",
-    icon: <FaLinkedinIn className="text-primary text-[18px]" />,
+    icon: <FaLinkedinIn className="text-[#0B1909] text-[18px]" />,
     link: "https://linkedin.com/maludatech",
   },
   {
     platform: "instagram",
-    icon: <FaInstagram className="text-primary text-[18px]" />,
+    icon: <FaInstagram className="text-[#0B1909] text-[18px]" />,
     link: "https://instagram.com/ugotech.eth",
   },
 ];
@@ -63,14 +70,14 @@ export const MobileSidebar: React.FC = () => {
         <div className="flex flex-col gap-6 pt-8">
           <Link
             href="/"
-            className="group flex items-center gap-2 rounded-xl px-2 py-1"
+            className="group flex items-center gap-1 rounded-xl px-2 py-1"
           >
             <BrainCircuit
               size={36}
               strokeWidth={1.75}
-              className="text-primary transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110"
+              className="text-foreground transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110"
             />
-            <span className="text-xl font-semibold tracking-wide text-foreground">
+            <span className="text-xl font-semibold tracking-wide text-primary">
               {APP_NAME}
             </span>
           </Link>
@@ -94,9 +101,21 @@ export const MobileSidebar: React.FC = () => {
             </div>
           </div>
           <Separator className="w-full" />
+          <div className="flex flex-col gap-3 items-center justify-center">
+            {navLinks.map((link, index) => (
+              <Link
+                href={link.href}
+                key={index}
+                className="text-lg font-semibold text-[#0B1909] dark:text-[#E9EDE8] hover:text-primary"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
           <div className="px-6 flex flex-col gap-3">
-            <Button className="w-full cursor-pointer">Register</Button>
-            <Button className="w-full cursor-pointer">Login</Button>
+            <button className="w-full bg-[#0B1909] py-2 px-4 rounded-xl cursor-pointer text-[#EEFAED]">
+              Get Started
+            </button>
           </div>
         </div>
       </SheetContent>
