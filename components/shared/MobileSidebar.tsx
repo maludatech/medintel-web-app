@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { BrainCircuit } from "lucide-react";
 import { CgMenuRight } from "react-icons/cg";
@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { APP_DESCRIPTION, APP_NAME } from "@/lib/constants";
+import { AuthModal } from "./AuthModal";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -28,101 +29,93 @@ const navLinks = [
 ];
 
 const socialIcons = [
-  {
-    icon: <FaFacebookF />,
-    link: "https://facebook.com/maludatech",
-  },
-  {
-    icon: <FaTwitter />,
-    link: "https://x.com/maludatechdev",
-  },
-  {
-    icon: <FaTelegramPlane />,
-    link: "https://t.me/maludatechdev",
-  },
-  {
-    icon: <FaLinkedinIn />,
-    link: "https://linkedin.com/maludatech",
-  },
-  {
-    icon: <FaInstagram />,
-    link: "https://instagram.com/ugotech.eth",
-  },
+  { icon: <FaFacebookF />, link: "https://facebook.com/maludatech" },
+  { icon: <FaTwitter />, link: "https://x.com/maludatechdev" },
+  { icon: <FaTelegramPlane />, link: "https://t.me/maludatechdev" },
+  { icon: <FaLinkedinIn />, link: "https://linkedin.com/maludatech" },
+  { icon: <FaInstagram />, link: "https://instagram.com/ugotech.eth" },
 ];
 
 export const MobileSidebar: React.FC = () => {
+  const [authOpen, setAuthOpen] = useState(false);
+
   return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <CgMenuRight className="text-black dark:text-white text-3xl cursor-pointer" />
-      </SheetTrigger>
-      <SheetContent
-        side="left"
-        className="w-[90vw] max-w-xs h-screen overflow-y-auto pb-8 
-        dark:bg-[#0D200C] bg-[#E9EDE8]"
-      >
-        <SheetTitle className="sr-only" />
-        <div className="flex flex-col h-full">
-          {/* Brand */}
-          <div className="flex items-center gap-2 p-4">
-            <BrainCircuit
-              size={36}
-              strokeWidth={1.75}
-              className="text-foreground transition-transform duration-300"
-            />
-            <span className="text-xl font-bold tracking-wide text-primary">
-              {APP_NAME}
-            </span>
-          </div>
+    <>
+      <Sheet>
+        <SheetTrigger asChild>
+          <CgMenuRight className="text-black dark:text-white text-3xl cursor-pointer" />
+        </SheetTrigger>
+        <SheetContent
+          side="left"
+          className="w-[90vw] max-w-xs h-screen overflow-y-auto pb-8 dark:bg-[#0D200C] bg-[#E9EDE8]"
+        >
+          <SheetTitle className="sr-only" />
+          <div className="flex flex-col h-full">
+            {/* Brand */}
+            <div className="flex items-center gap-2 p-4">
+              <BrainCircuit
+                size={36}
+                strokeWidth={1.75}
+                className="text-foreground"
+              />
+              <span className="text-xl font-bold tracking-wide text-primary">
+                {APP_NAME}
+              </span>
+            </div>
 
-          {/* Description */}
-          <p className="px-4 text-sm text-[#0B1909] dark:text-[#E9EDE8] opacity-80">
-            {APP_DESCRIPTION}
-          </p>
+            {/* Description */}
+            <p className="px-4 text-sm text-[#0B1909] dark:text-[#E9EDE8] opacity-80">
+              {APP_DESCRIPTION}
+            </p>
 
-          <Separator className="my-4" />
+            <Separator className="my-4" />
 
-          {/* Navigation */}
-          <nav className="flex flex-col gap-4 px-4">
-            {navLinks.map((link, index) => (
-              <Link
-                key={index}
-                href={link.href}
-                className="text-lg font-semibold text-[#0B1909] dark:text-[#E9EDE8] hover:text-primary transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
-
-          {/* CTA */}
-          <div className="px-4 mt-6">
-            <button className="w-full dark:bg-[#E9EDE8] bg-[#0B1909] text-[#EEFAED] dark:text-[#0B1909] py-2 rounded-lg font-medium hover:opacity-90 transition cursor-pointer">
-              Get Started
-            </button>
-          </div>
-
-          {/* Social Links */}
-          <div className="mt-auto px-4 pt-6">
-            <Separator className="mb-4" />
-            <div className="flex gap-4">
-              {socialIcons.map((s, i) => (
+            {/* Navigation */}
+            <nav className="flex flex-col gap-4 px-4">
+              {navLinks.map((link, index) => (
                 <Link
-                  key={i}
-                  href={s.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-full bg-white dark:bg-[#1E471A] 
-                  text-[#0B1909] dark:text-white hover:bg-primary hover:text-white 
-                  transition-colors"
+                  key={index}
+                  href={link.href}
+                  className="text-lg font-semibold text-[#0B1909] dark:text-[#E9EDE8] hover:text-primary transition-colors"
                 >
-                  {React.cloneElement(s.icon, { size: 16 })}
+                  {link.label}
                 </Link>
               ))}
+            </nav>
+
+            {/* CTA */}
+            <div className="px-4 mt-6">
+              <button
+                onClick={() => setAuthOpen(true)}
+                className="w-full dark:bg-[#E9EDE8] bg-[#0B1909] text-[#EEFAED] dark:text-[#0B1909] py-2 rounded-lg font-medium hover:opacity-90 transition cursor-pointer"
+              >
+                Get Started
+              </button>
+            </div>
+
+            {/* Social Links */}
+            <div className="mt-auto px-4 pt-6">
+              <Separator className="mb-4" />
+              <div className="flex gap-4">
+                {socialIcons.map((s, i) => (
+                  <Link
+                    key={i}
+                    href={s.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 rounded-full bg-white dark:bg-[#1E471A] text-[#0B1909] dark:text-white hover:bg-primary hover:text-white transition-colors"
+                  >
+                    {React.cloneElement(s.icon, { size: 16 })}
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </SheetContent>
-    </Sheet>
+        </SheetContent>
+      </Sheet>
+
+      {/* Modal Component */}
+      <AuthModal open={authOpen} onOpenChange={setAuthOpen} />
+    </>
   );
 };
