@@ -53,7 +53,7 @@ export const MobileSidebar: React.FC = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <CgMenuRight className="text-black text-3xl cursor-pointer" />
+        <CgMenuRight className="text-black dark:text-white text-3xl cursor-pointer" />
       </SheetTrigger>
       <SheetContent
         side="left"
