@@ -7,7 +7,7 @@ import { ThemeToggle } from "./ThemeToggle";
 import { APP_NAME } from "@/lib/constants";
 import { MobileSidebar } from "./MobileSidebar";
 import { Button } from "../ui/button";
-import { AuthModal } from "./AuthModal";
+import { AuthModal } from "./Auth/AuthModal";
 
 const navLinks = [
   { href: "/", label: "Home" },

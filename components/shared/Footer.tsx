@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Twitter, Github, Facebook } from "lucide-react";
 import { APP_NAME } from "@/lib/constants";
 import images from "@/public/assets/images";
-import { AuthModal } from "./AuthModal";
+import { AuthModal } from "./Auth/AuthModal";
 
 interface Links {
   label: string;

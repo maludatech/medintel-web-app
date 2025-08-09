@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { APP_DESCRIPTION, APP_NAME } from "@/lib/constants";
-import { AuthModal } from "./AuthModal";
+import { AuthModal } from "./Auth/AuthModal";
 
 const navLinks = [
   { href: "/", label: "Home" },
