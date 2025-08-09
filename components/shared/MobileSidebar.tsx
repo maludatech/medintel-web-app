@@ -38,10 +38,13 @@ const socialIcons = [
 
 export const MobileSidebar: React.FC = () => {
   const [authOpen, setAuthOpen] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
+
+  const handleCloseSheet = () => setSheetOpen(false);
 
   return (
     <>
-      <Sheet>
+      <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
         <SheetTrigger asChild>
           <CgMenuRight className="text-black dark:text-white text-3xl cursor-pointer" />
         </SheetTrigger>
@@ -76,6 +79,7 @@ export const MobileSidebar: React.FC = () => {
                 <Link
                   key={index}
                   href={link.href}
+                  onClick={handleCloseSheet} // ✅ Close on link click
                   className="text-lg font-semibold text-[#0B1909] dark:text-[#E9EDE8] hover:text-primary transition-colors"
                 >
                   {link.label}
@@ -86,7 +90,10 @@ export const MobileSidebar: React.FC = () => {
             {/* CTA */}
             <div className="px-4 mt-6">
               <button
-                onClick={() => setAuthOpen(true)}
+                onClick={() => {
+                  handleCloseSheet(); // ✅ Close sheet
+                  setAuthOpen(true); // ✅ Open modal
+                }}
                 className="w-full dark:bg-[#E9EDE8] bg-[#0B1909] text-[#EEFAED] dark:text-[#0B1909] py-2 rounded-lg font-medium hover:opacity-90 transition cursor-pointer"
               >
                 Get Started
@@ -103,6 +110,7 @@ export const MobileSidebar: React.FC = () => {
                     href={s.link}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={handleCloseSheet} // ✅ Close on social click
                     className="p-2 rounded-full bg-white dark:bg-[#1E471A] text-[#0B1909] dark:text-white hover:bg-primary hover:text-white transition-colors"
                   >
                     {React.cloneElement(s.icon, { size: 16 })}

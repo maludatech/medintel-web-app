@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
+  DialogOverlay,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,7 @@ interface AuthModalProps {
 export const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogOverlay className="fixed inset-0 bg-black/90" />
       <DialogContent className="sm:max-w-md rounded-2xl bg-[#E6F7E4] dark:bg-[#0D200C]">
         <DialogHeader className="flex flex-col gap-2 text-center">
           <DialogTitle className="text-lg font-semibold text-[#0B1909] dark:text-[#E9EDE8]">
@@ -27,7 +29,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
             Create a free account to check symptoms, get AI-powered predictions,
             and track your health history all in one secure place.
           </DialogDescription>
-          <p className="text-xs pt-2 text-[#0B1909] dark:text-[#E9EDE8]">
+          <p className="text-xs pt-2 text-[#0B1909] dark:text-[#E9EDE8] text-center">
             “Your health data is private, encrypted, and never shared without
             your consent”
           </p>
