@@ -18,7 +18,6 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "../ui/button";
 import { APP_DESCRIPTION, APP_NAME } from "@/lib/constants";
 
 const navLinks = [
@@ -30,28 +29,23 @@ const navLinks = [
 
 const socialIcons = [
   {
-    platform: "facebook",
-    icon: <FaFacebookF className="text-[#0B1909] text-[18px]" />,
+    icon: <FaFacebookF />,
     link: "https://facebook.com/maludatech",
   },
   {
-    platform: "twitter",
-    icon: <FaTwitter className="text-[#0B1909] text-[18px]" />,
+    icon: <FaTwitter />,
     link: "https://x.com/maludatechdev",
   },
   {
-    platform: "telegram",
-    icon: <FaTelegramPlane className="text-[#0B1909] text-[18px]" />,
+    icon: <FaTelegramPlane />,
     link: "https://t.me/maludatechdev",
   },
   {
-    platform: "linkedin",
-    icon: <FaLinkedinIn className="text-[#0B1909] text-[18px]" />,
+    icon: <FaLinkedinIn />,
     link: "https://linkedin.com/maludatech",
   },
   {
-    platform: "instagram",
-    icon: <FaInstagram className="text-[#0B1909] text-[18px]" />,
+    icon: <FaInstagram />,
     link: "https://instagram.com/ugotech.eth",
   },
 ];
@@ -64,58 +58,68 @@ export const MobileSidebar: React.FC = () => {
       </SheetTrigger>
       <SheetContent
         side="left"
-        className="w-[90vw] max-w-xs h-screen overflow-y-auto pb-8"
+        className="w-[90vw] max-w-xs h-screen overflow-y-auto pb-8 
+        dark:bg-[#0D200C] bg-[#E9EDE8]"
       >
-        <SheetTitle className="sr-only"></SheetTitle>
-        <div className="flex flex-col gap-6 pt-8">
-          <Link
-            href="/"
-            className="group flex items-center gap-1 rounded-xl px-2 py-1"
-          >
+        <SheetTitle className="sr-only" />
+        <div className="flex flex-col h-full">
+          {/* Brand */}
+          <div className="flex items-center gap-2 p-4">
             <BrainCircuit
               size={36}
               strokeWidth={1.75}
-              className="text-foreground transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110"
+              className="text-foreground transition-transform duration-300"
             />
-            <span className="text-xl font-semibold tracking-wide text-primary">
+            <span className="text-xl font-bold tracking-wide text-primary">
               {APP_NAME}
             </span>
-          </Link>
-          <div className="text-muted-foreground text-sm pt-2 px-6">
-            {APP_DESCRIPTION}
           </div>
 
-          <div className="flex flex-col gap-4 px-6">
-            <div className="flex items-center gap-3">
-              {socialIcons.map((icon, index) => (
-                <Link
-                  href={icon.link}
-                  key={index}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:scale-110 transition-transform"
-                >
-                  {icon.icon}
-                </Link>
-              ))}
-            </div>
-          </div>
-          <Separator className="w-full" />
-          <div className="flex flex-col gap-3 items-center justify-center">
+          {/* Description */}
+          <p className="px-4 text-sm text-[#0B1909] dark:text-[#E9EDE8] opacity-80">
+            {APP_DESCRIPTION}
+          </p>
+
+          <Separator className="my-4" />
+
+          {/* Navigation */}
+          <nav className="flex flex-col gap-4 px-4">
             {navLinks.map((link, index) => (
               <Link
-                href={link.href}
                 key={index}
-                className="text-lg font-semibold text-[#0B1909] dark:text-[#E9EDE8] hover:text-primary"
+                href={link.href}
+                className="text-lg font-semibold text-[#0B1909] dark:text-[#E9EDE8] hover:text-primary transition-colors"
               >
                 {link.label}
               </Link>
             ))}
-          </div>
-          <div className="px-6 flex flex-col gap-3">
-            <button className="w-full bg-[#0B1909] py-2 px-4 rounded-xl cursor-pointer text-[#EEFAED]">
+          </nav>
+
+          {/* CTA */}
+          <div className="px-4 mt-6">
+            <button className="w-full dark:bg-[#E9EDE8] bg-[#0B1909] text-[#EEFAED] dark:text-[#0B1909] py-2 rounded-lg font-medium hover:opacity-90 transition cursor-pointer">
               Get Started
             </button>
+          </div>
+
+          {/* Social Links */}
+          <div className="mt-auto px-4 pt-6">
+            <Separator className="mb-4" />
+            <div className="flex gap-4">
+              {socialIcons.map((s, i) => (
+                <Link
+                  key={i}
+                  href={s.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-full bg-white dark:bg-[#1E471A] 
+                  text-[#0B1909] dark:text-white hover:bg-primary hover:text-white 
+                  transition-colors"
+                >
+                  {React.cloneElement(s.icon, { size: 16 })}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </SheetContent>
