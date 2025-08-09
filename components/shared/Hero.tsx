@@ -10,7 +10,7 @@ export const Hero: React.FC = () => {
     <section className="w-full bg-[linear-gradient(to_right,_#CAEFC7,_#E9EDE8,_#55CC4B)] dark:bg-[linear-gradient(to_right,_#0D200C,_#B9C6B8,_#1E471A)]">
       <div className="container mx-auto pt-16 flex flex-col md:flex-row items-center justify-between gap-10">
         {/* Left Side */}
-        <div className="max-w-xl px-6 md:pb-2 md:px-12">
+        <div className="max-w-xl px-6 md:pb-4 md:px-12">
           <div className="w-fit flex items-center mb-6 text-muted-foreground border border-[#B9C6B8] dark:border-[#DDE3DD] rounded-full p-2.5">
             <CircleSmall
               className="text-[#1E471A] fill-[#1E471A] dark:text-[#DDE3DD]  dark:fill-[#DDE3DD] mr-2"
