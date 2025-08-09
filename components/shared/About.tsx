@@ -39,10 +39,10 @@ export const About: React.FC = () => {
         {/* First container */}
         <div className="flex flex-col gap-2">
           <hr className="w-64 border-t border-[#55CC4B]" />
-          <h1 className="text-3xl font-semibold text-[#0B1909]">
+          <h1 className="text-3xl font-semibold text-[#0B1909] dark:text-[#E9EDE8]">
             What is MedIntel?
           </h1>
-          <p className="text-[17px] text-[#0B1909] max-w-4xl mt-2">
+          <p className="text-[17px] text-[#0B1909] dark:text-[#E9EDE8] max-w-4xl mt-2">
             MedIntel is a cutting-edge AI-driven web and mobile platform
             designed to help users predict diseases based on symptoms.
             Leveraging machine learning and a vast medical database, it delivers
@@ -51,20 +51,22 @@ export const About: React.FC = () => {
         </div>
         {/* Second container */}
         <div className="flex flex-col gap-4">
-          <h1 className="text-3xl font-semibold text-[#0B1909]">
+          <h1 className="text-3xl font-semibold text-[#0B1909] dark:text-[#E9EDE8]">
             Why choose MedIntel?
           </h1>
           <div className="mt-4 grid grid-cols-1 gap-8 md:grid-cols-3">
             {whyChooseMedIntel.map((item, index) => (
               <Card
                 key={index}
-                className="flex flex-col gap-2 rounded-lg bg-[#E9EDE8] p-4"
+                className="flex flex-col gap-2 rounded-lg bg-[#E9EDE8] dark:bg-[#0D200C] p-4"
               >
-                <h2 className=" flex items-center gap-1 text-lg font-semibold text-[#0B1909]">
+                <h2 className=" flex items-center gap-1 text-lg font-semibold text-[#0B1909] dark:text-[#EEFAED]">
                   <SquareCheck className="text-[#55CC4B]" />
                   {item.heading}
                 </h2>
-                <p className="text-sm text-[#0B1909]">{item.body}</p>
+                <p className="text-sm text-[#0B1909] dark:text-[#EEFAED]">
+                  {item.body}
+                </p>
               </Card>
             ))}
           </div>
