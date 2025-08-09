@@ -36,8 +36,10 @@ export const HowItWorks: React.FC = () => {
       <div className="container mx-auto flex flex-col gap-8 px-6 md:px-12">
         {/* Section Header */}
         <div className="flex flex-col gap-1 justify-center items-center text-center">
-          <h2 className="text-3xl font-bold text-[#0B1909]">How It Works</h2>
-          <p className="text-muted-foreground text-lg">
+          <h2 className="text-3xl font-bold text-[#0B1909] dark:text-[#E9EDE8]">
+            How It Works
+          </h2>
+          <p className="text-[#0B1909] dark:text-[#E9EDE8] text-lg">
             Stay ahead of your health in just 3 steps
           </p>
         </div>
@@ -62,14 +64,16 @@ export const HowItWorks: React.FC = () => {
 
               {/* Text content */}
               <div className="flex items-start gap-1 p-4">
-                <span className="bg-[#55CC4B] text-sm text-white rounded-full w-6 h-6 flex items-center justify-center mt-1">
+                <span className="bg-[#55CC4B] text-sm text-[#E9EDE8] dark:text-[#0B1909] rounded-full w-6 h-6 flex items-center justify-center mt-1">
                   {index + 1}
                 </span>
                 <div className="flex flex-col">
-                  <h3 className="text-lg font-semibold text-[#0B1909]">
+                  <h3 className="text-lg font-semibold text-[#0B1909] dark:text-[#E9EDE8]">
                     {step.title}
                   </h3>
-                  <p className="text-sm text-[#0B1909]">{step.description}</p>
+                  <p className="text-sm text-[#0B1909] dark:text-[#E9EDE8]">
+                    {step.description}
+                  </p>
                 </div>
               </div>
             </Card>
