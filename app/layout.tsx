@@ -3,7 +3,6 @@ import { Rubik } from "next/font/google";
 import "./globals.css";
 import { APP_DESCRIPTION, APP_NAME, APP_SLOGAN } from "@/lib/constants";
 import { ClientThemeProvider } from "../components/shared/ClientThemeProvider";
-import { Navbar } from "@/components/shared/Navbar";
 import { Toaster } from "@/components/ui/sonner";
 
 const rubik = Rubik({
@@ -29,7 +28,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${rubik.variable} antialiased`}>
         <ClientThemeProvider>
-          <Navbar />
           {children}
           <Toaster richColors />
         </ClientThemeProvider>

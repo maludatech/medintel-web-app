@@ -55,7 +55,7 @@ export const Navbar: React.FC = () => {
             <ThemeToggle />
             <Button
               onClick={() => setAuthOpen(true)}
-              className="bg-foreground text-background px-4 py-2 rounded-md hover:bg-primary transition-colors cursor-pointer"
+              className="bg-foreground text-background px-4 py-2 rounded-md hover:opacity-90 hover:bg-foreground transition-colors cursor-pointer"
             >
               Get started
             </Button>

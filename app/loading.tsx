@@ -1,9 +1,8 @@
-// page.tsx
 "use client";
 
 import { Skeleton } from "@/components/ui/skeleton";
 
-export const loading = () => {
+export default function Loading() {
   return (
     <main>
       {/* Hero Section Skeleton */}
@@ -158,4 +157,4 @@ export const loading = () => {
       </footer>
     </main>
   );
-};
+}
