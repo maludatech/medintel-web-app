@@ -73,7 +73,7 @@ export const Testimonies: React.FC = () => {
                   key={index}
                   className="pl-4 md:basis-1/3 lg:basis-1/3"
                 >
-                  <Card className="rounded-2xl shadow-sm border border-[#E5E5E5] bg-[#F8F8F8] dark:bg-[#0D200C] h-full flex flex-col justify-between">
+                  <Card className="rounded-2xl shadow-sm border bg-[#F8F8F8] dark:bg-[#0D200C] h-full flex flex-col justify-between">
                     <CardContent className="p-6 flex flex-col gap-4">
                       <div className="flex items-start">
                         <Quote size={30} className="text-[#55CC4B] font-bold" />
