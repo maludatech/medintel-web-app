@@ -50,16 +50,16 @@ export const Testimonies: React.FC = () => {
       <div className="container mx-auto flex flex-col w-full gap-10 px-6 md:px-12">
         {/* Header */}
         <div className="flex flex-col gap-4 mb-6">
-          <div className="w-fit flex items-center text-muted-foreground border border-muted-foreground rounded-full p-2.5">
+          <div className="w-fit flex items-center border border-[#B9C6B8] dark:border-[#DDE3DD] rounded-full p-2.5">
             <CircleSmall
-              className="text-[#1E471A] fill-[#1E471A] mr-1"
+              className="text-[#1E471A] fill-[#1E471A] dark:text-[#409938] dark:fill-[#409938] mr-1"
               size={14}
             />
-            <h2 className="text-[#1E471A] text-xs font-semibold">
+            <h2 className="text-[#1E471A] dark:text-[#DDE3DD] text-xs font-semibold">
               Testimonies
             </h2>
           </div>
-          <h1 className="text-3xl font-bold text-[#0B1909]">
+          <h1 className="text-3xl font-bold text-[#0B1909] dark:text-[#E9EDE8]">
             What Our Early Users Are Saying
           </h1>
         </div>
@@ -73,19 +73,21 @@ export const Testimonies: React.FC = () => {
                   key={index}
                   className="pl-4 md:basis-1/3 lg:basis-1/3"
                 >
-                  <Card className="rounded-2xl shadow-sm border border-[#E5E5E5] bg-[#F8F8F8] h-full flex flex-col justify-between">
+                  <Card className="rounded-2xl shadow-sm border border-[#E5E5E5] bg-[#F8F8F8] dark:bg-[#0D200C] h-full flex flex-col justify-between">
                     <CardContent className="p-6 flex flex-col gap-4">
                       <div className="flex items-start">
                         <Quote size={30} className="text-[#55CC4B] font-bold" />
-                        <p className="text-lg font-medium text-[#0B1909] leading-relaxed">
+                        <p className="text-lg font-medium text-[#0B1909] dark:text-[#E9EDE8] leading-relaxed">
                           {item.testimony}
                         </p>
                       </div>
                       <div className="flex flex-col mt-4 items-end">
-                        <h3 className="text-sm font-semibold text-[#0B1909]">
+                        <h3 className="text-sm font-semibold text-[#0B1909] dark:text-[#E9EDE8]">
                           {item.name}
                         </h3>
-                        <p className="text-xs text-[#1E471A]">{item.role}</p>
+                        <p className="text-xs text-[#1E471A] dark:text-[#B9C6B8]">
+                          {item.role}
+                        </p>
                       </div>
                     </CardContent>
                   </Card>
