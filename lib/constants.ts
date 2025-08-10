@@ -16,7 +16,7 @@ export const bloodGroupOptions = [
   { value: "O-", label: "O-" },
 ];
 
-export const genoTypeOptions = [
+export const genotypeOptions = [
   { value: "AA", label: "AA" },
   { value: "AS", label: "AS" },
   { value: "SS", label: "SS" },
