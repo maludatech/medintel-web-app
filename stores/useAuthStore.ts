@@ -9,7 +9,7 @@ interface User {
   username: string;
   phoneNumber: number;
   bloodGroup: string;
-  genoType: string;
+  genotype: string;
   DOB: string;
   gender: string;
   registrationDate: string;

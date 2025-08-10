@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { APP_NAME } from "@/lib/constants";
 import { ThemeToggle } from "../ThemeToggle";
 import Link from "next/link";
+import { AuthMobileSidebar } from "./AuthMobileSidebar";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -15,7 +16,7 @@ const navLinks = [
 
 export const AuthNavbar: React.FC = () => {
   return (
-    <header className="w-full bg-background shadow-md dark:bg-gray-900">
+    <header className="w-full dark:bg-[#0D200C] bg-[#F8F8F8]">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         {/* Brand */}
         <Link
@@ -47,14 +48,12 @@ export const AuthNavbar: React.FC = () => {
 
         <div className="hidden md:flex items-center gap-3">
           <ThemeToggle />
-          <Button className="bg-foreground text-background px-4 py-2 rounded-md hover:opacity-90 hover:bg-foreground transition-colors cursor-pointer">
-            Get started
-          </Button>
         </div>
 
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center gap-2">
           <ThemeToggle />
+          <AuthMobileSidebar />
         </div>
       </nav>
     </header>
