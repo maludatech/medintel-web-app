@@ -7,6 +7,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { ChevronDownIcon } from "lucide-react";
 
 export const FormField: React.FC<{
   id: string;
@@ -34,8 +42,6 @@ export const FormField: React.FC<{
   control,
 }) => (
   <div className="flex flex-col gap-1 w-full">
-    {" "}
-    {/* Ensure parent div takes full width */}
     {showLabel && (
       <label
         htmlFor={id}
@@ -44,6 +50,8 @@ export const FormField: React.FC<{
         {label}
       </label>
     )}
+
+    {/* SELECT FIELD */}
     {type === "select" && options ? (
       <Controller
         control={control}
@@ -52,9 +60,9 @@ export const FormField: React.FC<{
           <Select onValueChange={field.onChange} value={field.value}>
             <SelectTrigger
               id={id}
-              className={`w-full p-2 rounded-lg border bg-[#FFFFFF] dark:bg-[#000000] text-foreground text-sm placeholder-[#B9C6B8] focus:ring-2 focus:ring-primary focus:border-transparent transition-all h-10 ${
+              className={`w-full p-2 rounded-lg border bg-[#FFFFFF] dark:bg-[#000000] text-foreground text-sm h-10 data-[placeholder]:text-[#B9C6B8] ${
                 error ? "border-red-500" : "border-[#B9C6B8]"
-              }`} // Added h-10 for consistent height
+              }`}
               aria-describedby={error ? `${id}-error` : undefined}
               aria-label={`Select ${label}`}
             >
@@ -70,14 +78,55 @@ export const FormField: React.FC<{
           </Select>
         )}
       />
+    ) : type === "date" ? (
+      /* DATE PICKER FIELD */
+      <Controller
+        control={control}
+        name={id}
+        render={({ field }) => {
+          const selectedDate = field.value ? new Date(field.value) : undefined;
+          return (
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  id={id}
+                  className={`w-full justify-between font-normal h-10 bg-[#FFFFFF] dark:bg-[#000000] text-foreground text-sm border hover:bg-transparent hover:text-none ${
+                    error ? "border-red-500" : "border-[#B9C6B8]"
+                  } ${!selectedDate ? "text-[#B9C6B8]" : ""}`}
+                  aria-describedby={error ? `${id}-error` : undefined}
+                >
+                  <span>
+                    {selectedDate
+                      ? selectedDate.toLocaleDateString()
+                      : placeholder || "Select date"}
+                  </span>
+                  <ChevronDownIcon className="h-4 w-4 text-[#B9C6B8]" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={selectedDate}
+                  captionLayout="dropdown"
+                  onSelect={(date) => {
+                    field.onChange(date ? date.toISOString() : "");
+                  }}
+                />
+              </PopoverContent>
+            </Popover>
+          );
+        }}
+      />
     ) : (
+      /* DEFAULT INPUT FIELD */
       <div className="relative w-full">
         <input
           id={id}
           type={showPassword && type === "password" ? "text" : type}
           className={`w-full p-2 rounded-lg border bg-[#FFFFFF] dark:bg-[#000000] text-foreground text-sm placeholder-[#B9C6B8] focus:ring-2 focus:ring-primary focus:border-transparent transition-all h-10 ${
             error ? "border-red-500" : "border-[#B9C6B8]"
-          }`} // Added h-10 for consistent height
+          }`}
           placeholder={placeholder}
           {...register}
           aria-describedby={error ? `${id}-error` : undefined}
@@ -101,6 +150,7 @@ export const FormField: React.FC<{
         )}
       </div>
     )}
+
     {error && (
       <p id={`${id}-error`} className="text-sm text-red-500 dark:text-red-400">
         {error}
