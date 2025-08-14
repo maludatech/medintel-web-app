@@ -7,8 +7,6 @@ import { Toaster } from "@/components/ui/sonner";
 
 const rubik = Rubik({
   subsets: ["latin"],
-  variable: "--font-rubik",
-  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -26,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${rubik.variable} antialiased`}>
+      <body className={`${rubik.className} antialiased`}>
         <ClientThemeProvider>
           {children}
           <Toaster richColors />
