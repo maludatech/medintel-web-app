@@ -20,7 +20,7 @@ import { useAuthStore } from "@/stores/useAuthStore";
 
 // Validation schema
 const schema = yup.object().shape({
-  fullName: yup.string().required("Full name is required"),
+  name: yup.string().required("Full name is required"),
   email: yup
     .string()
     .email("Please enter a valid email address")
@@ -28,26 +28,38 @@ const schema = yup.object().shape({
   username: yup
     .string()
     .required("Username is required")
-    .min(6, "Username must be at least 6 characters")
-    .max(10, "Username cannot exceed 10 characters"),
-  phoneNumber: yup
-    .number()
-    .typeError("Phone number must be a number")
-    .required("Phone number is required"),
-  bloodGroup: yup.string().required("Blood group is required"),
-  genotype: yup.string().required("Genotype is required"),
-  DOB: yup.string().required("Date of birth is required"),
+    .min(3, "Username must be at least 3 characters")
+    .max(30, "Username cannot exceed 30 characters")
+    .matches(
+      /^[a-zA-Z0-9_]+$/,
+      "Username can only contain letters, numbers, and underscores"
+    ),
+  bloodGroup: yup
+    .string()
+    .oneOf(
+      ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
+      "Please select a valid blood group"
+    )
+    .required("Blood group is required"),
+  genotype: yup
+    .string()
+    .oneOf(["AA", "AS", "SS", "AC", "SC"], "Please select a valid genotype")
+    .required("Genotype is required"),
+  dateOfBirth: yup
+    .string()
+    .required("Date of birth is required")
+    .test(
+      "is-date",
+      "Please select a valid date",
+      (val) => !isNaN(Date.parse(val || ""))
+    ),
   gender: yup
     .string()
-    .oneOf(["Male", "Female", "Other"], "Please select a valid gender")
+    .oneOf(["male", "female", "other"], "Please select a valid gender")
     .required("Gender is required"),
   password: yup
     .string()
-    .min(8, "Password must be at least 8 characters")
-    .max(15, "Password cannot exceed 15 characters")
-    .matches(/[a-z]/, "Password must contain at least one lowercase letter")
-    .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .matches(/[0-9]/, "Password must contain at least one number")
+    .min(6, "Password must be at least 6 characters")
     .required("Password is required"),
   confirmPassword: yup
     .string()
@@ -100,7 +112,7 @@ export const SignUpForm: React.FC<{ callbackUrl: string }> = ({
     };
 
     try {
-      const response = await fetch("/api/sign-up", {
+      const response = await fetch("/api/auth/sign-up", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(processedData),
@@ -154,8 +166,8 @@ export const SignUpForm: React.FC<{ callbackUrl: string }> = ({
             id="fullName"
             label="Full Name"
             type="text"
-            register={register("fullName")}
-            error={errors.fullName?.message}
+            register={register("name")}
+            error={errors.name?.message}
             placeholder="Your full name"
           />
           <FormField
@@ -165,14 +177,6 @@ export const SignUpForm: React.FC<{ callbackUrl: string }> = ({
             register={register("email")}
             error={errors.email?.message}
             placeholder="Email"
-          />
-          <FormField
-            id="phoneNumber"
-            label="Phone Number"
-            type="phone"
-            register={register("phoneNumber")}
-            error={errors.phoneNumber?.message}
-            placeholder="phone number"
           />
           <div className="flex items-center gap-2 w-full">
             <FormField
@@ -200,8 +204,8 @@ export const SignUpForm: React.FC<{ callbackUrl: string }> = ({
               label="Date of Birth"
               type="date"
               control={control}
-              register={register("DOB")}
-              error={errors.DOB?.message}
+              register={register("dateOfBirth")}
+              error={errors.dateOfBirth?.message}
             />
             <FormField
               id="gender"

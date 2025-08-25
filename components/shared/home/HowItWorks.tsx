@@ -3,7 +3,7 @@
 import React from "react";
 import Image, { StaticImageData } from "next/image";
 import images from "@/public/assets/images";
-import { Card } from "../ui/card";
+import { Card } from "../../ui/card";
 
 interface Steps {
   title: string;

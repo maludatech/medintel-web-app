@@ -37,7 +37,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
 
         <div className="flex flex-col gap-3 mt-2">
           <Link href={"/sign-up"}>
-            <Button className="bg-[#0B1909] text-[#EEFAED] dark:bg-[#E9EDE8] dark:text-[#0D200C] hover:opacity-90 cursor-pointer w-full">
+            <Button className="bg-[#0B1909] text-[#EEFAED] dark:bg-[#E9EDE8] dark:text-[#0D200C] hover:opacity-90 hover:bg-[#0B1909] dark:hover:bg-[#E9EDE8] cursor-pointer w-full">
               Sign Up
             </Button>
           </Link>

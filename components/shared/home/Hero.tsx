@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { CircleSmall } from "lucide-react";
-import { AuthModal } from "./Auth/AuthModal";
+import { AuthModal } from "../Auth/AuthModal";
 import images from "@/public/assets/images";
 import { useRouter } from "next/navigation";
 
