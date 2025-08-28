@@ -7,7 +7,7 @@ export const POST = async (request: Request) => {
   try {
     const data = await request.json();
 
-    if (!data?.email || !data?.password || !data?.username || !data?.fullName) {
+    if (!data?.email || !data?.password || !data?.username || !data?.name) {
       return new Response(
         JSON.stringify({ message: "Missing required fields" }),
         { status: 400 }
@@ -16,7 +16,7 @@ export const POST = async (request: Request) => {
 
     const {
       username,
-      fullName,
+      name,
       email,
       bloodGroup,
       genotype,
@@ -56,7 +56,7 @@ export const POST = async (request: Request) => {
     // Create new user
     const newUser = new User({
       username: normalizedUsername,
-      fullName,
+      name,
       email: normalizedEmail,
       bloodGroup,
       genotype,
