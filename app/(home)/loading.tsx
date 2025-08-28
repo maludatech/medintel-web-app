@@ -6,7 +6,7 @@ export default function Loading() {
   return (
     <main>
       {/* Hero Section Skeleton */}
-      <section className="w-full bg-[linear-gradient(to_right,_#CAEFC7,_#E9EDE8,_#55CC4B)] dark:bg-[linear-gradient(to_right,_#0D200C,_#B9C6B8,_#1E471A)]">
+      <section className="w-full">
         <div className="container mx-auto pt-16 flex flex-col md:flex-row items-center justify-between gap-10 px-6 md:px-12">
           {/* Left Side */}
           <div className="max-w-xl flex flex-col gap-6">
@@ -37,10 +37,7 @@ export default function Loading() {
             <Skeleton className="w-1/2 h-8" />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {Array.from({ length: 5 }).map((_, index) => (
-                <div
-                  key={index}
-                  className="flex flex-col gap-2 p-4 rounded-lg bg-[#E9EDE8] dark:bg-[#0D200C]"
-                >
+                <div key={index} className="flex flex-col gap-2 p-4 rounded-lg">
                   <Skeleton className="w-3/4 h-6" />
                   <Skeleton className="w-full h-4" />
                 </div>
@@ -89,7 +86,7 @@ export default function Loading() {
             <div className="flex gap-4 overflow-hidden">
               {Array.from({ length: 3 }).map((_, index) => (
                 <div key={index} className="flex-1 min-w-[250px] max-w-[33%]">
-                  <div className="rounded-2xl bg-[#F8F8F8] dark:bg-[#0D200C] p-6 flex flex-col gap-4 h-full">
+                  <div className="rounded-2xl p-6 flex flex-col gap-4 h-full">
                     <Skeleton className="w-8 h-8" />
                     <Skeleton className="w-full h-20" />
                     <div className="flex flex-col items-end gap-2">
@@ -123,7 +120,7 @@ export default function Loading() {
       </section>
 
       {/* Footer Section Skeleton */}
-      <footer className="bg-[#E6F7E4] dark:bg-[#0D200C] border-t border-border pt-16">
+      <footer className="border-t border-border pt-16">
         <div className="container mx-auto flex flex-col justify-between gap-10 px-6 md:px-12 py-16 min-h-screen">
           <div className="flex flex-col gap-7 items-center justify-center">
             <Skeleton className="w-3/4 max-w-2xl h-10" />

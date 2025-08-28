@@ -18,7 +18,6 @@ export const POST = async (request: Request) => {
       username,
       fullName,
       email,
-      phoneNumber,
       bloodGroup,
       genotype,
       dateOfBirth,

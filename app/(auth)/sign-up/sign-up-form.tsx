@@ -48,8 +48,12 @@ const schema = yup.object().shape({
   dateOfBirth: yup
     .string()
     .required("Date of birth is required")
+    .matches(
+      /^\d{4}-\d{2}-\d{2}$/,
+      "Date of birth must be in YYYY-MM-DD format"
+    )
     .test(
-      "is-date",
+      "is-valid-date",
       "Please select a valid date",
       (val) => !isNaN(Date.parse(val || ""))
     ),
@@ -82,7 +86,6 @@ export const SignUpForm: React.FC<{ callbackUrl: string }> = ({
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [serverError, setServerError] = useState<string | undefined>(undefined);
 
   // Form setup
   const {
@@ -103,7 +106,6 @@ export const SignUpForm: React.FC<{ callbackUrl: string }> = ({
 
   const onSubmit = async (data: FormValues) => {
     setIsLoading(true);
-    setServerError(undefined);
 
     const processedData = {
       ...data,
@@ -124,12 +126,10 @@ export const SignUpForm: React.FC<{ callbackUrl: string }> = ({
       } else {
         const { message } = await response.json();
         const errorMessage = handleApiError(message);
-        setServerError(errorMessage);
         toast.error(errorMessage);
       }
     } catch {
       const errorMessage = "An unexpected error occurred.";
-      setServerError(errorMessage);
       toast.error(errorMessage);
     } finally {
       setIsLoading(false);
@@ -184,7 +184,6 @@ export const SignUpForm: React.FC<{ callbackUrl: string }> = ({
               label="Blood Group"
               type="select"
               control={control}
-              register={register("bloodGroup")}
               error={errors.bloodGroup?.message}
               options={bloodGroupOptions}
             />
@@ -193,18 +192,16 @@ export const SignUpForm: React.FC<{ callbackUrl: string }> = ({
               label="Genotype"
               type="select"
               control={control}
-              register={register("genotype")}
               error={errors.genotype?.message}
               options={genotypeOptions}
             />
           </div>
           <div className="flex items-center gap-2 w-full">
             <FormField
-              id="DOB"
+              id="dateOfBirth"
               label="Date of Birth"
               type="date"
               control={control}
-              register={register("dateOfBirth")}
               error={errors.dateOfBirth?.message}
             />
             <FormField
@@ -237,14 +234,6 @@ export const SignUpForm: React.FC<{ callbackUrl: string }> = ({
             showPassword={showConfirmPassword}
             onToggle={() => setShowConfirmPassword(!showConfirmPassword)}
           />
-          {serverError && (
-            <p
-              id="server-error"
-              className="text-center text-sm text-red-500 dark:text-red-400"
-            >
-              {serverError}
-            </p>
-          )}
           <button
             type="submit"
             disabled={isLoading}

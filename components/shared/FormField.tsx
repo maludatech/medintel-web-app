@@ -22,7 +22,7 @@ export const FormField: React.FC<{
   id: string;
   label: string;
   type: string;
-  register: any;
+  register?: any;
   error?: string;
   placeholder?: string;
   showPassword?: boolean;
@@ -88,9 +88,10 @@ export const FormField: React.FC<{
           name={id}
           render={({ field }) => {
             const [open, setOpen] = useState(false);
-            const selectedDate = field.value
-              ? new Date(field.value)
-              : undefined;
+            const selectedDate =
+              field.value && !isNaN(Date.parse(field.value))
+                ? new Date(field.value)
+                : undefined;
 
             return (
               <Popover open={open} onOpenChange={setOpen}>
@@ -117,9 +118,13 @@ export const FormField: React.FC<{
                     selected={selectedDate}
                     captionLayout="dropdown"
                     onSelect={(date) => {
-                      field.onChange(date ?? null); // Pass Date object
+                      field.onChange(
+                        date ? date.toISOString().split("T")[0] : null
+                      );
                       setOpen(false);
                     }}
+                    fromYear={1900}
+                    toYear={new Date().getFullYear()}
                   />
                 </PopoverContent>
               </Popover>
