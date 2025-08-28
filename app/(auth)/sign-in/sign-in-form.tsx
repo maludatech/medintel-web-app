@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { Spinner } from "@/components/shared/Spinner";
 import { Separator } from "@/components/ui/separator";
 import {
+  APP_NAME,
   bloodGroupOptions,
   genderOptions,
   genotypeOptions,
@@ -125,15 +126,13 @@ export const SignInForm: React.FC<{ callbackUrl: string }> = ({
   };
 
   return (
-    <section className="flex  items-center justify-center dark:bg-[#0D200C] bg-[#F8F8F8] p-4 pt-24 text-foreground">
+    <section className="flex  items-center justify-center p-4 pt-24 text-foreground">
       <div className="w-full flex flex-col gap-2 max-w-md rounded-lg bg-[#FFFFFF] dark:bg-[#000000] p-6 shadow-sm backdrop-blur-sm shadow-[#00000040] dark:shadow-[#FFFFFF40]">
         <div className="flex flex-col items-center justify-center gap-4 text-center">
-          <h2 className="text-2xl font-semibold">
-            Create Your MedIntel Account
-          </h2>
+          <h2 className="text-2xl font-semibold">Welcome back to {APP_NAME}</h2>
           <p className="text-sm dark:text-[#E9EDE8] text-[#0B1909]">
-            Get instant AI-powered health insights, It only takes a minute to
-            join.
+            Login in to view your dashboard, check symptoms and see past
+            predictions.
           </p>
         </div>
         <form
@@ -143,22 +142,6 @@ export const SignInForm: React.FC<{ callbackUrl: string }> = ({
           aria-label="Sign up form"
         >
           <FormField
-            id="username"
-            label="Username"
-            type="text"
-            register={register("username")}
-            error={errors.username?.message}
-            placeholder="Enter your username"
-          />
-          <FormField
-            id="fullName"
-            label="Full Name"
-            type="text"
-            register={register("fullName")}
-            error={errors.fullName?.message}
-            placeholder="Your full name"
-          />
-          <FormField
             id="email"
             label="Email Address"
             type="email"
@@ -166,53 +149,6 @@ export const SignInForm: React.FC<{ callbackUrl: string }> = ({
             error={errors.email?.message}
             placeholder="Email"
           />
-          <FormField
-            id="phoneNumber"
-            label="Phone Number"
-            type="phone"
-            register={register("phoneNumber")}
-            error={errors.phoneNumber?.message}
-            placeholder="phone number"
-          />
-          <div className="flex items-center gap-2 w-full">
-            <FormField
-              id="bloodGroup"
-              label="Blood Group"
-              type="select"
-              control={control}
-              register={register("bloodGroup")}
-              error={errors.bloodGroup?.message}
-              options={bloodGroupOptions}
-            />
-            <FormField
-              id="genotype"
-              label="Genotype"
-              type="select"
-              control={control}
-              register={register("genotype")}
-              error={errors.genotype?.message}
-              options={genotypeOptions}
-            />
-          </div>
-          <div className="flex items-center gap-2 w-full">
-            <FormField
-              id="DOB"
-              label="Date of Birth"
-              type="date"
-              control={control}
-              register={register("DOB")}
-              error={errors.DOB?.message}
-            />
-            <FormField
-              id="gender"
-              label="Gender"
-              type="select"
-              control={control}
-              register={register("gender")}
-              error={errors.gender?.message}
-              options={genderOptions}
-            />
-          </div>
           <FormField
             id="password"
             label="Password"
@@ -223,24 +159,6 @@ export const SignInForm: React.FC<{ callbackUrl: string }> = ({
             showPassword={showPassword}
             onToggle={() => setShowPassword(!showPassword)}
           />
-          <FormField
-            id="confirmPassword"
-            label="Confirm Password"
-            type="password"
-            register={register("confirmPassword")}
-            error={errors.confirmPassword?.message}
-            placeholder="Confirm your password"
-            showPassword={showConfirmPassword}
-            onToggle={() => setShowConfirmPassword(!showConfirmPassword)}
-          />
-          {serverError && (
-            <p
-              id="server-error"
-              className="text-center text-sm text-red-500 dark:text-red-400"
-            >
-              {serverError}
-            </p>
-          )}
           <button
             type="submit"
             disabled={isLoading}

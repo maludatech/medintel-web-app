@@ -136,7 +136,7 @@ export const SignUpForm: React.FC<{ callbackUrl: string }> = ({
   };
 
   return (
-    <section className="flex  items-center justify-center dark:bg-[#0D200C] bg-[#F8F8F8] p-4 pt-24 text-foreground">
+    <section className="flex  items-center justify-center p-4 pt-24 text-foreground">
       <div className="w-full flex flex-col gap-2 max-w-md rounded-lg bg-[#FFFFFF] dark:bg-[#000000] p-6 shadow-sm backdrop-blur-sm shadow-[#00000040] dark:shadow-[#FFFFFF40]">
         <div className="flex flex-col items-center justify-center gap-4 text-center">
           <h2 className="text-2xl font-semibold">
