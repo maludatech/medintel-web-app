@@ -4,14 +4,13 @@ import { create } from "zustand";
 
 interface User {
   userId: string;
-  fullName: string;
+  name: string;
   email: string;
   username: string;
-  phoneNumber: number;
+  dateOfBirth: string;
+  gender: string;
   bloodGroup: string;
   genotype: string;
-  DOB: string;
-  gender: string;
   registrationDate: string;
 }
 
