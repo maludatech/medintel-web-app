@@ -41,7 +41,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ open, onOpenChange }) => {
               Sign Up
             </Button>
           </Link>
-          <Link href={"/login"}>
+          <Link href={"/sign-in"}>
             <Button
               variant="outline"
               className="border-[#0D200C] text-[#0D200C] dark:border-[#E9EDE8] dark:text-[#E9EDE8] bg-transparent hover:opacity-80 cursor-pointer w-full"
