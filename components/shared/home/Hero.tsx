@@ -14,7 +14,7 @@ export const Hero: React.FC = () => {
 
   return (
     <>
-      <section className="w-full bg-[linear-gradient(to_right,_#CAEFC7,_#E9EDE8,_#55CC4B)] dark:bg-[linear-gradient(to_right,_#0D200C,_#B9C6B8,_#1E471A)]">
+      <section className="w-full bg-[linear-gradient(to_right,_#D1F0D0,_#E6ECE6,_#7AD878)] dark:bg-[linear-gradient(to_right,_#0A1A10,_#1A2E24,_#2A4B3A)]">
         <div className="container mx-auto pt-16 flex flex-col md:flex-row items-center justify-between gap-10">
           {/* Left Side */}
           <div className="max-w-xl px-6 md:pb-4 md:px-12">

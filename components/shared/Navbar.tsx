@@ -21,7 +21,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <header className="w-full bg-[linear-gradient(to_right,_#CAEFC7,_#E9EDE8,_#55CC4B)] dark:bg-[linear-gradient(to_right,_#0D200C,_#B9C6B8,_#1E471A)]">
+      <header className="w-full bg-[linear-gradient(to_right,_#D1F0D0,_#E6ECE6,_#7AD878)] dark:bg-[linear-gradient(to_right,_#0A1A10,_#1A2E24,_#2A4B3A)]">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
           {/* Brand */}
           <Link
