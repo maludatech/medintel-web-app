@@ -1,8 +1,8 @@
 import { Metadata } from "next";
-import { SymptomChecker } from "./symptom-checker";
+import { ForgotPassword } from "./forgot-password";
 
 export const metadata: Metadata = {
-  title: "Symptom Checker",
+  title: "Forgot Password",
 };
 
 export default async function Page(props: {
@@ -13,5 +13,5 @@ export default async function Page(props: {
   const searchParams = await props.searchParams;
   const { callbackUrl } = searchParams;
 
-  return <SymptomChecker callbackUrl={callbackUrl || "/dashboard"} />;
+  return <ForgotPassword callbackUrl={callbackUrl || "/dashboard"} />;
 }

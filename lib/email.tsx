@@ -14,13 +14,13 @@ export async function sendResetEmail(email: string, resetUrl: string) {
     );
 
     const response = await resend.emails.send({
-      from: `
-        ${APP_NAME} <no-reply@polomalbullish-remi.com>
-      `,
+      from: `${APP_NAME} <no-reply@polomalbullish-remi.com>`,
       to: email,
       subject: `${APP_NAME} - Password Reset`,
       html: emailHtml,
     });
+
+    console.log("Resend response:", response);
 
     return response;
   } catch (error: any) {
