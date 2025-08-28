@@ -1,4 +1,3 @@
-import jwt from "jsonwebtoken";
 import argon2 from "argon2";
 import { connectToDb } from "@/lib/dbConnect";
 import User from "@/models/User";
@@ -67,20 +66,15 @@ export const POST = async (request: Request) => {
 
     await newUser.save();
 
-    // Create JWT
-    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET!, {
-      expiresIn: "7d",
-    });
-
     return new Response(
       JSON.stringify({
         message: "User registered successfully",
-        token,
+
         user: {
           id: newUser._id,
           username: newUser.username,
           email: newUser.email,
-          fullName: newUser.fullName,
+          name: newUser.name,
         },
       }),
       { status: 201 }

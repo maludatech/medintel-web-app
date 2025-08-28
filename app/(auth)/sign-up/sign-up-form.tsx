@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
 import { Spinner } from "@/components/shared/Spinner";
 import { Separator } from "@/components/ui/separator";
