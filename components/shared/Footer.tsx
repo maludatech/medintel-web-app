@@ -50,7 +50,7 @@ export const Footer: React.FC = () => {
             </p>
             <button
               onClick={() => setAuthOpen(true)}
-              className="bg-[#0B1909] text-[#EEFAED] dark:bg-[#E9EDE8] dark:text-[#0B1909] font-semibold rounded-2xl px-6 py-2.5 text-base hover:opacity-90 transition"
+              className="bg-[#0B1909] text-[#EEFAED] dark:bg-[#E9EDE8] dark:text-[#0B1909] font-semibold rounded-2xl px-6 py-2.5 text-base hover:opacity-90 transition cursor-pointer"
             >
               Get Started
             </button>
