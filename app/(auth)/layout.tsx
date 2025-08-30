@@ -1,7 +1,7 @@
 import { AuthNavbar } from "@/components/shared/Auth/AuthNavbar";
 import { AuthFooter } from "@/components/shared/Auth/AuthFooter";
 
-export default async function HomeLayout({
+export default async function AuthLayout({
   children,
 }: {
   children: React.ReactNode;

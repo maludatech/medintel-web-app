@@ -13,5 +13,5 @@ export default async function Page(props: {
   const searchParams = await props.searchParams;
   const { callbackUrl } = searchParams;
 
-  return <Dashboard callbackUrl={callbackUrl || "/dashboard"} />;
+  return <Dashboard callbackUrl={callbackUrl || "/sign-in"} />;
 }
