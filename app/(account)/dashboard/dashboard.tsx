@@ -2,10 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/stores/useAuthStore";
-import AppSidebar from "@/components/shared/account/Sidebar";
-import { ca } from "date-fns/locale";
 import { AccountNavbar } from "@/components/shared/account/AccountNavbar";
 
 export const Dashboard: React.FC<{ callbackUrl: string }> = ({

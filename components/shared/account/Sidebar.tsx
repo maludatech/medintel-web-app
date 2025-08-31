@@ -8,6 +8,7 @@ import {
   BrainCircuit,
   History,
   LayoutDashboard,
+  LogOut,
   UserPen,
 } from "lucide-react";
 
@@ -80,10 +81,10 @@ export default function AppSidebar() {
               <h4>{user?.name}</h4>
             </div>
             <Button
-              variant="destructive"
               onClick={logout}
-              className="cursor-pointer w-full"
+              className="flex items-center cursor-pointer w-full bg-red-500 text-white hover:bg-red-600"
             >
+              <LogOut />
               Log Out
             </Button>
           </SidebarGroupContent>
