@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { ThemeToggle } from "../ThemeToggle";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import images from "@/public/assets/images";
 
 export const AccountNavbar = () => {
@@ -31,6 +32,7 @@ export const AccountNavbar = () => {
           </p>
         </div>
         <div className="flex gap-2 items-center">
+          <SidebarTrigger size={"icon"} className="cursor-pointer" />
           <ThemeToggle />
           <Image
             src={images.profile}

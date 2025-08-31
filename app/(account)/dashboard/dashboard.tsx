@@ -21,11 +21,8 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
   }, [user]);
 
   return (
-    <section className="flex">
-      <AppSidebar />
-      <div className="container mx-auto flex flex-col gap-2 px-6 py-4 md:py-2 w-full">
-        <AccountNavbar />
-      </div>
+    <section className="container mx-auto flex flex-col gap-2 px-6 py-4 md:py-2 w-full">
+      <AccountNavbar />
     </section>
   );
 };

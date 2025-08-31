@@ -1,18 +1,14 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import AppSidebar from "@/components/shared/account/Sidebar";
 
-export default async function AccountLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col min-h-screen dark:bg-[#0D200C] bg-[#F8F8F8]">
-      <SidebarProvider>
-        <main className="flex-1">
-          <SidebarTrigger />
-          {children}
-        </main>
-      </SidebarProvider>
-    </div>
+    <SidebarProvider>
+      <AppSidebar />
+      <main className="flex flex-col min-h-screen w-full dark:bg-[rgb(13,32,12)] bg-[#F8F8F8]">
+        <SidebarTrigger className="hidden md:flex cursor-pointer" />
+        {children}
+      </main>
+    </SidebarProvider>
   );
 }
