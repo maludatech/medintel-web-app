@@ -2,15 +2,18 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { CircleSmall } from "lucide-react";
 import { AuthModal } from "../Auth/AuthModal";
 import images from "@/public/assets/images";
-import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 export const Hero: React.FC = () => {
   const router = useRouter();
 
   const [authOpen, setAuthOpen] = useState(false);
+
+  const { user } = useAuthStore();
 
   return (
     <>
@@ -37,13 +40,15 @@ export const Hero: React.FC = () => {
             </p>
             <div className="flex gap-2">
               <button
-                onClick={() => setAuthOpen(true)}
+                onClick={() =>
+                  user ? router.push("/symptom-check") : setAuthOpen(true)
+                }
                 className="text-base bg-[#0B1909] text-[#EEFAED] dark:bg-[#E9EDE8] dark:text-[#0B1909] font-semibold rounded-2xl p-2.5 cursor-pointer hover:opacity-90 transition"
               >
                 Get Started
               </button>
               <button
-                onClick={() => router.push("#about")}
+                onClick={() => router.push("/#about")}
                 className="text-base text-[#0B1909] dark:text-[#E9EDE8] font-semibold bg-transparent border border-[#0B1909] dark:border-[#E9EDE8] rounded-2xl p-2.5 cursor-pointer"
               >
                 Learn More

@@ -2,9 +2,10 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Twitter, Github, Facebook } from "lucide-react";
 import { APP_NAME } from "@/lib/constants";
-import images from "@/public/assets/images";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { AuthModal } from "./Auth/AuthModal";
 
 interface Links {
@@ -31,6 +32,10 @@ export const Footer: React.FC = () => {
     { icon: <Facebook size={20} />, url: "https://facebook.com" },
   ];
 
+  const router = useRouter();
+
+  const { user } = useAuthStore();
+
   const currentYear = new Date().getFullYear();
 
   const [authOpen, setAuthOpen] = useState(false);
@@ -49,7 +54,9 @@ export const Footer: React.FC = () => {
               health, and make informed decisions from one intelligent platform.
             </p>
             <button
-              onClick={() => setAuthOpen(true)}
+              onClick={() =>
+                user ? router.push("/symptom-check") : setAuthOpen(true)
+              }
               className="bg-[#0B1909] text-[#EEFAED] dark:bg-[#E9EDE8] dark:text-[#0B1909] font-semibold rounded-2xl px-6 py-2.5 text-base hover:opacity-90 transition cursor-pointer"
             >
               Get Started
