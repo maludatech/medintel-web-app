@@ -12,10 +12,18 @@ export default function Home() {
     <main>
       <Navbar />
       <Hero />
-      <About />
-      <HowItWorks />
-      <Testimonies />
-      <NewsLetter />
+      <section id="about">
+        <About />
+      </section>
+      <section id="howItWorks">
+        <HowItWorks />
+      </section>
+      <section id="testimonies">
+        <Testimonies />
+      </section>
+      <section id="newsletter">
+        <NewsLetter />
+      </section>
       <Footer />
     </main>
   );

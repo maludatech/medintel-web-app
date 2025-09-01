@@ -8,16 +8,27 @@ import { APP_NAME } from "@/lib/constants";
 import { MobileSidebar } from "./MobileSidebar";
 import { Button } from "../ui/button";
 import { AuthModal } from "./Auth/AuthModal";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 const navLinks = [
+  { href: "/#home", label: "Home" },
+  { href: "/#about", label: "About" },
+  { href: "/symptom-check", label: "Predict" },
+  { href: "/#howItWorks", label: "How It Works" },
+  { href: "/contact", label: "Contact" },
+];
+
+const authenticatedNavLinks = [
   { href: "/", label: "Home" },
-  { href: "#about", label: "About" },
-  { href: "/predict", label: "Predict" },
-  { href: "#contact", label: "Contact" },
+  { href: "/dashboard", label: "Dashboard" },
+  { href: "/symptom-check", label: "Predict" },
+  { href: "/profile", label: "Profile" },
+  { href: "/history", label: "History" },
 ];
 
 export const Navbar: React.FC = () => {
   const [authOpen, setAuthOpen] = useState(false);
+  const { user } = useAuthStore();
 
   return (
     <>
@@ -40,15 +51,25 @@ export const Navbar: React.FC = () => {
 
           {/* Desktop Links */}
           <div className="hidden md:flex items-center space-x-6">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="relative text-lg font-medium text-foreground hover:text-primary transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {user
+              ? authenticatedNavLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="relative text-lg font-medium text-foreground hover:text-primary transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                ))
+              : navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="relative text-lg font-medium text-foreground hover:text-primary transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
           </div>
 
           <div className="hidden md:flex items-center gap-3">

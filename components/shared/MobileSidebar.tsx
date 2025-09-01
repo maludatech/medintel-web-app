@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { BrainCircuit } from "lucide-react";
+import { BrainCircuit, LogOut } from "lucide-react";
 import { CgMenuRight } from "react-icons/cg";
 import {
   FaFacebookF,
@@ -20,12 +20,23 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { APP_DESCRIPTION, APP_NAME } from "@/lib/constants";
 import { AuthModal } from "./Auth/AuthModal";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { Button } from "../ui/button";
 
 const navLinks = [
+  { href: "/#home", label: "Home" },
+  { href: "/#about", label: "About" },
+  { href: "/symptom-check", label: "Predict" },
+  { href: "/#howItWorks", label: "How It Works" },
+  { href: "/contact", label: "Contact" },
+];
+
+const authenticatedNavLinks = [
   { href: "/", label: "Home" },
-  { href: "#about", label: "About" },
-  { href: "/predict", label: "Predict" },
-  { href: "#contact", label: "Contact" },
+  { href: "/dashboard", label: "Dashboard" },
+  { href: "/symptom-check", label: "Predict" },
+  { href: "/profile", label: "Profile" },
+  { href: "/history", label: "History" },
 ];
 
 const socialIcons = [
@@ -39,6 +50,7 @@ const socialIcons = [
 export const MobileSidebar: React.FC = () => {
   const [authOpen, setAuthOpen] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
+  const { user, logout } = useAuthStore();
 
   const handleCloseSheet = () => setSheetOpen(false);
 
@@ -75,29 +87,50 @@ export const MobileSidebar: React.FC = () => {
 
             {/* Navigation */}
             <nav className="flex flex-col gap-4 px-4">
-              {navLinks.map((link, index) => (
-                <Link
-                  key={index}
-                  href={link.href}
-                  onClick={handleCloseSheet} // ✅ Close on link click
-                  className="text-lg font-semibold text-[#0B1909] dark:text-[#E9EDE8] hover:text-primary transition-colors"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {user
+                ? authenticatedNavLinks.map((link, index) => (
+                    <Link
+                      key={index}
+                      href={link.href}
+                      onClick={handleCloseSheet} // ✅ Close on link click
+                      className="text-lg font-semibold text-[#0B1909] dark:text-[#E9EDE8] hover:text-primary transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  ))
+                : navLinks.map((link, index) => (
+                    <Link
+                      key={index}
+                      href={link.href}
+                      onClick={handleCloseSheet} // ✅ Close on link click
+                      className="text-lg font-semibold text-[#0B1909] dark:text-[#E9EDE8] hover:text-primary transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
             </nav>
 
             {/* CTA */}
             <div className="px-4 mt-6">
-              <button
-                onClick={() => {
-                  handleCloseSheet(); // ✅ Close sheet
-                  setAuthOpen(true); // ✅ Open modal
-                }}
-                className="w-full dark:bg-[#E9EDE8] bg-[#0B1909] text-[#EEFAED] dark:text-[#0B1909] py-2 rounded-lg font-medium hover:opacity-90 transition cursor-pointer"
-              >
-                Get Started
-              </button>
+              {user ? (
+                <Button
+                  onClick={logout}
+                  className="flex items-center rounded-lg font-medium py-2 cursor-pointer w-full bg-red-500 text-white hover:bg-red-600"
+                >
+                  <LogOut />
+                  Log Out
+                </Button>
+              ) : (
+                <button
+                  onClick={() => {
+                    handleCloseSheet();
+                    setAuthOpen(true);
+                  }}
+                  className="w-full dark:bg-[#E9EDE8] bg-[#0B1909] text-[#EEFAED] dark:text-[#0B1909] py-2 rounded-lg font-medium hover:opacity-90 transition cursor-pointer"
+                >
+                  Get Started
+                </button>
+              )}
             </div>
 
             {/* Social Links */}
