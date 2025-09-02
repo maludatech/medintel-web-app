@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuthStore } from "@/stores/useAuthStore";
-import { AccountNavbar } from "@/components/shared/account/AccountNavbar";
+import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import {
   Activity,
@@ -18,8 +17,10 @@ import {
   UserPen,
   SquareCheckBig,
 } from "lucide-react";
-import Link from "next/link";
 import { RecentPredictions } from "@/components/shared/account/dashboard/RecentPredictions";
+import { SymptomTrend } from "@/components/shared/account/dashboard/SymptomTrend";
+import { AccountNavbar } from "@/components/shared/account/AccountNavbar";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 interface QuickAccess {
   label: string;
@@ -62,6 +63,17 @@ const AIRecommendations: string[] = [
   "Incorporate more leafy greens in you body",
   "Get at least 20 minutes pre-walking per day",
   "Consider an annual cholesterol test",
+];
+
+const dummyData = [
+  { date: "1/1", predictions: 4 },
+  { date: "3/3", predictions: 2 },
+  { date: "1/1", predictions: 3 },
+  { date: "1/1", predictions: 3 },
+  { date: "1/1", predictions: 4 },
+  { date: "1/1", predictions: 6 },
+  { date: "1/1", predictions: 3 },
+  { date: "1/1", predictions: 3 },
 ];
 
 export const Dashboard: React.FC<{ callbackUrl: string }> = ({
@@ -267,6 +279,8 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
                 </div>
               </div>
             </Card>
+            {/* Symptom Trend Chart */}
+            <SymptomTrend data={dummyData} />
           </div>
         </div>
       </div>
