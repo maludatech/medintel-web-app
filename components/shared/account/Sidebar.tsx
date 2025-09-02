@@ -39,7 +39,15 @@ export default function AppSidebar() {
   const isActive = (path: string) => currentPath === path;
 
   return (
-    <Sidebar>
+    <Sidebar
+      className="w-48 max-w-48"
+      style={
+        {
+          "--sidebar-width": "12rem",
+          "--sidebar-width-icon": "3rem",
+        } as React.CSSProperties
+      }
+    >
       <SidebarContent>
         <SidebarGroup className="flex flex-col gap-4 h-full justify-between">
           <h1 className="pt-8 group flex items-center gap-1 rounded-xl">

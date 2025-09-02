@@ -16,8 +16,10 @@ import {
   Quote,
   SquareArrowUpRight,
   UserPen,
+  SquareCheckBig,
 } from "lucide-react";
 import Link from "next/link";
+import { RecentPredictions } from "@/components/shared/account/dashboard/RecentPredictions";
 
 interface QuickAccess {
   label: string;
@@ -184,7 +186,7 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
                   <Link
                     href={item.url}
                     key={index}
-                    className="flex items-center justify-between gap-1 bg-white dark:bg-[#0D0D0D] p-2 rounded-md hover:bg-accent hover:dark:bg-accent"
+                    className="flex items-center justify-between gap-1 bg-white dark:bg-[#0D0D0D] p-2 rounded-md hover:bg-accent hover:dark:bg-accent text-sm"
                   >
                     <span className="flex items-center gap-2">
                       {item.icon}
@@ -194,12 +196,23 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
                   </Link>
                 ))}
               </div>
-              <Card className="dark:bg-[#0D0D0D] p-4 w-full">
+              <Card className="dark:bg-[#0D0D0D] p-4 w-full flex flex-col gap-2">
                 <h2 className="text-base font-semibold text-[#081207] dark:text-white">
                   AI Recommendations
                 </h2>
+                {AIRecommendations.map((item, index) => (
+                  <h4
+                    key={index}
+                    className="flex items-center gap-1 bg-white dark:bg-[#0D0D0D] p-2 text-sm"
+                  >
+                    <SquareCheckBig size={16} color="#55CC4B" />
+                    {item}
+                  </h4>
+                ))}
               </Card>
             </div>
+            {/* Recent Prediction Table */}
+            <RecentPredictions />
           </div>
 
           <div className="flex flex-col gap-4">

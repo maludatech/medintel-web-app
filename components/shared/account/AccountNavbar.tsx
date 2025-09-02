@@ -32,7 +32,10 @@ export const AccountNavbar = () => {
           </p>
         </div>
         <div className="flex gap-2 items-center">
-          <SidebarTrigger size={"icon"} className="cursor-pointer" />
+          <SidebarTrigger
+            size={"icon"}
+            className="cursor-pointer flex  md:hidden"
+          />
           <ThemeToggle />
           <Image
             src={images.profile}
