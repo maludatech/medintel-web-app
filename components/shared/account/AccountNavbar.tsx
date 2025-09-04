@@ -4,6 +4,14 @@ import Image from "next/image";
 import { ThemeToggle } from "../ThemeToggle";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import images from "@/public/assets/images";
+import { usePathname } from "next/navigation";
+
+const pathNames = [
+  { label: "Dashboard", url: "/dashboard" },
+  { label: "Symptom Check", url: "/symptom-check" },
+  { label: "Profile", url: "/profile" },
+  { label: "History", url: "/history" },
+];
 
 export const AccountNavbar = () => {
   const currentDate = new Date()
@@ -16,25 +24,31 @@ export const AccountNavbar = () => {
       const suffixes = ["th", "st", "nd", "rd"];
       const lastDigit = parseInt(match) % 10;
       const suffix =
-        lastDigit <= 3 && match !== "11" && match !== "12" && match !== "13"
+        lastDigit <= 3 && !["11", "12", "13"].includes(match)
           ? suffixes[lastDigit]
           : suffixes[0];
       return match + suffix;
     });
 
+  const pathName = usePathname();
+
+  // Match current path to label
+  const currentPath =
+    pathNames.find((p) => p.url === pathName)?.label || "Overview";
+
   return (
     <nav className="w-full">
       <div className="flex items-center justify-between w-full">
         <div className="flex flex-col gap-0.5 md:gap-1">
-          <h1 className="text-lg md:text-xl">Dashboard</h1>
+          <h1 className="text-lg md:text-xl">{currentPath}</h1>
           <p className="text-xs md:text-sm text-muted-foreground">
             {currentDate}
           </p>
         </div>
         <div className="flex gap-2 items-center">
           <SidebarTrigger
-            size={"icon"}
-            className="cursor-pointer flex  md:hidden"
+            size="icon"
+            className="cursor-pointer flex md:hidden"
           />
           <ThemeToggle />
           <Image
