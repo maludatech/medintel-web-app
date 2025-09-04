@@ -20,6 +20,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { Search } from "lucide-react";
+
+// Symptoms extracted from your dataset
+const SYMPTOM_LIST = [
+  "fever",
+  "cough",
+  "headache",
+  "fatigue",
+  "chills",
+  "loss_of_taste",
+  "shortness_of_breath",
+  "sore_throat",
+  "nausea",
+  "body_ache",
+];
 
 export const SymptomChecker: React.FC<{ callbackUrl: string }> = ({
   callbackUrl,
@@ -31,6 +46,9 @@ export const SymptomChecker: React.FC<{ callbackUrl: string }> = ({
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
   const [duration, setDuration] = useState("");
   const [severity, setSeverity] = useState("");
+  const [filtered, setFiltered] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [results, setResults] = useState<any[]>([]);
 
   useEffect(() => {
     if (!user) {
@@ -38,106 +56,264 @@ export const SymptomChecker: React.FC<{ callbackUrl: string }> = ({
     }
   }, [user]);
 
-  const handleAnalyze = () => {
-    // 🔥 Hook this up to your backend later
-    console.log({
-      symptoms: selectedSymptoms,
-      duration,
-      severity,
-    });
+  // Filter suggestions based on search
+  useEffect(() => {
+    if (!search.trim()) {
+      setFiltered([]);
+      return;
+    }
+    const query = search.toLowerCase();
+    setFiltered(
+      SYMPTOM_LIST.filter(
+        (sym) =>
+          sym.toLowerCase().includes(query) && !selectedSymptoms.includes(sym)
+      )
+    );
+  }, [search, selectedSymptoms]);
+
+  const addSymptom = (symptom: string) => {
+    if (!selectedSymptoms.includes(symptom)) {
+      setSelectedSymptoms((prev) => [...prev, symptom]);
+    }
+    setSearch("");
+    setFiltered([]);
+  };
+
+  const handleAnalyze = async () => {
+    setLoading(true);
+    setResults([]);
+
+    try {
+      // 🔥 Hook to backend API
+      const res = await fetch("/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          symptoms: selectedSymptoms,
+          duration,
+          severity,
+        }),
+      });
+
+      const data = await res.json();
+      setResults(data.conditions); // [{ name, likelihood, recommendation, risk }, ...]
+    } catch (err) {
+      console.error("Error analyzing:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Reset to form
+  const resetForm = () => {
+    setResults([]);
+    setLoading(false);
   };
 
   return (
     <section className="container mx-auto flex flex-col gap-10 md:gap-12 px-6 py-4 md:py-2 w-full">
       <AccountNavbar />
+
       <div className="flex items-center justify-center w-full">
-        <Card className="max-w-lg w-full p-6 flex flex-col gap-6">
-          <CardHeader className="text-center">
-            <CardTitle className="text-xl font-semibold text-[#081207] dark:text-[#E7EAE7]">
-              Check Your Symptoms
-            </CardTitle>
-            <CardDescription className="text-[#122B10] dark:text-[#E7EAE7]">
-              Select your symptoms to get an AI-powered analysis and possible
-              conditions.
-            </CardDescription>
-            <CardDescription className="text-[#122B10] dark:text-[#E7EAE7] italic">
-              “This is not a medical diagnosis, Please consult a doctor.”
-            </CardDescription>
-          </CardHeader>
+        <Card className="max-w-lg w-full px-2 py-4 flex flex-col gap-8">
+          {/* 🟢 Step 1: Loading */}
+          {loading && results.length === 0 && (
+            <CardContent className="flex flex-col items-center justify-center h-64 gap-4">
+              <div className="w-6 h-6 border-4 border-green-500 border-t-transparent rounded-full animate-spin" />
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                Analyzing your symptoms with MedIntel AI...
+              </p>
+            </CardContent>
+          )}
 
-          <CardContent className="flex flex-col gap-4">
-            {/* Search Input */}
-            <Input
-              placeholder="Search Symptoms..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-
-            {/* Selected Symptoms */}
-            <div>
-              <h3 className="font-semibold mb-1">Selected Symptoms</h3>
-              {selectedSymptoms.length > 0 ? (
-                <ul className="flex flex-wrap gap-2">
-                  {selectedSymptoms.map((symptom, i) => (
-                    <li
-                      key={i}
-                      className="px-2 py-1 bg-gray-200 dark:bg-gray-800 rounded-md text-sm"
-                    >
-                      {symptom}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-sm text-muted-foreground">
-                  No symptoms selected yet
+          {/* 🟢 Step 2: Results */}
+          {!loading && results.length > 0 && (
+            <CardContent className="flex flex-col gap-6">
+              <div className="text-center">
+                <h2 className="text-lg font-bold">
+                  Here are your AI-powered insights
+                </h2>
+                <p className="text-xs text-muted-foreground italic">
+                  “This is not a medical diagnosis. Consult a healthcare
+                  professional for proper medical advice.”
                 </p>
-              )}
-            </div>
-
-            {/* Duration */}
-            <div>
-              <h3 className="font-semibold mb-1">Select Duration</h3>
-              <Select onValueChange={setDuration}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Choose duration" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="days">Days</SelectItem>
-                  <SelectItem value="hours">Hours</SelectItem>
-                  <SelectItem value="weeks">Weeks</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Symptom Severity */}
-            <div>
-              <h3 className="font-semibold mb-1">Symptom Severity</h3>
-              <div className="flex gap-4">
-                {["Mild", "Moderate", "Severe"].map((level) => (
-                  <label key={level} className="flex items-center gap-1">
-                    <input
-                      type="radio"
-                      name="severity"
-                      value={level.toLowerCase()}
-                      checked={severity === level.toLowerCase()}
-                      onChange={(e) => setSeverity(e.target.value)}
-                      className="accent-green-500"
-                    />
-                    {level}
-                  </label>
-                ))}
               </div>
-            </div>
 
-            {/* Submit */}
-            <Button
-              onClick={handleAnalyze}
-              disabled={selectedSymptoms.length === 0 || !duration || !severity}
-              className="w-full"
-            >
-              Analyze Symptoms
-            </Button>
-          </CardContent>
+              {results.map((r, i) => (
+                <div
+                  key={i}
+                  className="border rounded-lg p-4 flex flex-col gap-2"
+                >
+                  <div className="flex items-center justify-between">
+                    <p className="font-semibold">{r.name}</p>
+                    <span
+                      className={`text-xs font-medium px-2 py-1 rounded ${
+                        r.risk === "Low"
+                          ? "bg-green-100 text-green-700"
+                          : r.risk === "Medium"
+                            ? "bg-yellow-100 text-yellow-700"
+                            : "bg-red-100 text-red-700"
+                      }`}
+                    >
+                      {r.risk}
+                    </span>
+                  </div>
+                  <p className="text-sm">{r.likelihood}% Likely</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-300">
+                    {r.recommendation}
+                  </p>
+                </div>
+              ))}
+
+              <div className="flex gap-3 w-full">
+                <Button variant="outline" className="w-1/2 cursor-pointer">
+                  Find a Doctor
+                </Button>
+                <Button variant="outline" className="w-1/2 cursor-pointer">
+                  Download Report
+                </Button>
+              </div>
+
+              <button
+                className="text-green-600 underline text-sm cursor-pointer"
+                onClick={resetForm}
+              >
+                Re-check Symptoms
+              </button>
+            </CardContent>
+          )}
+
+          {/* 🟢 Default: Form */}
+          {!loading && results.length === 0 && (
+            <>
+              <CardHeader className="flex flex-col gap-4 items-center justify-center text-center">
+                <CardTitle className="text-xl font-semibold text-[#081207] dark:text-[#E7EAE7]">
+                  Check Your Symptoms
+                </CardTitle>
+                <CardDescription className="text-[#122B10] dark:text-[#E7EAE7]">
+                  Select your symptoms to get an AI-powered analysis and
+                  possible conditions.
+                </CardDescription>
+                <CardDescription className="text-[#122B10] dark:text-[#E7EAE7] italic">
+                  “This is not a medical diagnosis, Please consult a doctor.”
+                </CardDescription>
+              </CardHeader>
+
+              <CardContent className="flex flex-col gap-4">
+                {/* Search Input */}
+                <div className="relative flex flex-col w-full">
+                  <div className="relative flex items-center w-full">
+                    <Input
+                      placeholder="Search Symptoms..."
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                      className="bg-[#F8F8F8] dark:bg-[#0A1809] placeholder-[#B6BDB5]"
+                    />
+                    <Search
+                      className="absolute right-2"
+                      size={15}
+                      color="#B6BDB5"
+                    />
+                  </div>
+
+                  {/* Search Suggestions */}
+                  {filtered.length > 0 && (
+                    <ul className="absolute top-full mt-1 w-full bg-white dark:bg-[#0A1809] border rounded-md shadow-md z-10 max-h-40 overflow-y-auto">
+                      {filtered.map((sym, i) => (
+                        <li
+                          key={i}
+                          onClick={() => addSymptom(sym)}
+                          className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 text-sm"
+                        >
+                          {sym.replaceAll("_", " ")}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                {/* Selected Symptoms */}
+                <div>
+                  <h3 className="font-semibold mb-1 text-[#081207] dark:text-[#E7EAE7]">
+                    Selected Symptoms
+                  </h3>
+                  {selectedSymptoms.length > 0 ? (
+                    <ul className="flex flex-wrap gap-2">
+                      {selectedSymptoms.map((symptom, i) => (
+                        <li
+                          key={i}
+                          onClick={() =>
+                            setSelectedSymptoms((prev) =>
+                              prev.filter((s) => s !== symptom)
+                            )
+                          }
+                          className="px-2 py-1 bg-gray-200 dark:bg-gray-800 rounded-md text-sm cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700 transition"
+                          title="Click to remove"
+                        >
+                          {symptom.replaceAll("_", " ")}
+                          <span className="ml-1 text-xs font-semibold">✕</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">
+                      No symptoms selected yet
+                    </p>
+                  )}
+                </div>
+
+                {/* Duration */}
+                <div>
+                  <h3 className="font-semibold mb-1 text-[#081207] dark:text-[#E7EAE7]">
+                    Select Duration
+                  </h3>
+                  <Select onValueChange={setDuration}>
+                    <SelectTrigger className="w-full bg-[#F8F8F8] dark:bg-[#0A1809] placeholder-[#B6BDB5]">
+                      <SelectValue placeholder="Choose duration" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="days">Days</SelectItem>
+                      <SelectItem value="hours">Hours</SelectItem>
+                      <SelectItem value="weeks">Weeks</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Symptom Severity */}
+                <div>
+                  <h3 className="font-semibold mb-1 text-[#081207] dark:text-[#E7EAE7]">
+                    Symptom Severity
+                  </h3>
+                  <div className="flex gap-4">
+                    {["Mild", "Moderate", "Severe"].map((level) => (
+                      <label key={level} className="flex items-center gap-1">
+                        <input
+                          type="radio"
+                          name="severity"
+                          value={level.toLowerCase()}
+                          checked={severity === level.toLowerCase()}
+                          onChange={(e) => setSeverity(e.target.value)}
+                          className="accent-green-500"
+                        />
+                        {level}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Submit */}
+                <Button
+                  onClick={handleAnalyze}
+                  disabled={
+                    selectedSymptoms.length === 0 || !duration || !severity
+                  }
+                  className="w-full cursor-pointer"
+                >
+                  Analyze Symptoms
+                </Button>
+              </CardContent>
+            </>
+          )}
         </Card>
       </div>
     </section>
