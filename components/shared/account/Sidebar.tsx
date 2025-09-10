@@ -3,13 +3,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import {
-  BookCheck,
   BrainCircuit,
-  History,
+  BookCheck,
   LayoutDashboard,
-  LogOut,
+  History,
   UserPen,
+  LogOut,
 } from "lucide-react";
 
 import {
@@ -19,13 +20,13 @@ import {
   SidebarGroupContent,
   SidebarMenu,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { APP_NAME } from "@/lib/constants";
 import images from "@/public/assets/images";
 
-// Menu items.
 const items = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
   { title: "Symptom Check", url: "/symptom-check", icon: BookCheck },
@@ -36,11 +37,38 @@ const items = [
 export default function AppSidebar() {
   const currentPath = usePathname();
   const { user, logout } = useAuthStore();
+  const { setOpenMobile } = useSidebar(); // <-- ShadCN mobile control
+  const [isMobile, setIsMobile] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const isActive = (path: string) => currentPath === path;
+
+  // Detect mobile after hydration
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Automatically open sidebar on desktop
+  useEffect(() => {
+    if (!isMobile) setSidebarOpen(true);
+  }, [isMobile]);
+
+  // Auto-close sidebar on mobile click
+  const handleLinkClick = () => {
+    if (isMobile) {
+      setSidebarOpen(false);
+      setOpenMobile(false); // <-- Close ShadCN mobile sidebar
+    }
+  };
 
   return (
     <Sidebar
-      className="w-48 max-w-48"
+      className={`w-48 max-w-48 fixed h-full z-40 transition-transform duration-300 ${
+        sidebarOpen ? "translate-x-0" : "-translate-x-full"
+      }`}
       style={
         {
           "--sidebar-width": "12rem",
@@ -60,12 +88,14 @@ export default function AppSidebar() {
               {APP_NAME}
             </span>
           </h1>
+
           <SidebarGroupContent className="h-2/4">
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <Link
                     href={item.url}
+                    onClick={handleLinkClick}
                     className={`text-base flex items-center gap-2 px-1.5 py-2.5 mb-4 rounded-md${
                       isActive(item.url) ? " bg-primary/30" : " hover:bg-accent"
                     }`}
@@ -77,6 +107,7 @@ export default function AppSidebar() {
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
+
           <SidebarGroupContent className="flex flex-col gap-6">
             <div className="flex flex-col items-center justify-center gap-2 mb-4">
               <Image
@@ -89,7 +120,10 @@ export default function AppSidebar() {
               <h4>{user?.name}</h4>
             </div>
             <Button
-              onClick={logout}
+              onClick={() => {
+                logout();
+                handleLinkClick();
+              }}
               className="flex items-center cursor-pointer w-full bg-red-500 text-white hover:bg-red-600"
             >
               <LogOut />
