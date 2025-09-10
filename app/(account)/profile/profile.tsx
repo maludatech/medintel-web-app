@@ -78,7 +78,7 @@ export const Profile: React.FC<{ callbackUrl: string }> = ({ callbackUrl }) => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="flex flex-col gap-4">
               <div className="flex justify-between items-center">
                 <span className="font-medium text-gray-700 dark:text-gray-300">
                   Full Name
@@ -95,8 +95,7 @@ export const Profile: React.FC<{ callbackUrl: string }> = ({ callbackUrl }) => {
                   {user?.email || "N/A"}
                 </span>
               </div>
-
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center w-full ">
                 <span className="font-medium text-gray-700 dark:text-gray-300">
                   Blood Group
                 </span>
@@ -104,7 +103,7 @@ export const Profile: React.FC<{ callbackUrl: string }> = ({ callbackUrl }) => {
                   {user?.bloodGroup || "N/A"}
                 </span>
               </div>
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center w-full">
                 <span className="font-medium text-gray-700 dark:text-gray-300">
                   Genotype
                 </span>
