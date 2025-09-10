@@ -117,14 +117,13 @@ export const Profile: React.FC<{ callbackUrl: string }> = ({ callbackUrl }) => {
             <div className="flex gap-4 mt-6">
               <Button
                 variant="outline"
-                className="flex-1 bg-[#E7EAE7] dark:bg-[#212621] hover:bg-gray-200 dark:hover:bg-[#2A2A2A] transition-colors duration-200"
+                className="flex-1 cursor-pointer  bg-[#E7EAE7] dark:bg-[#212621] hover:bg-gray-200 dark:hover:bg-[#2A2A2A] transition-colors duration-200"
                 aria-label="Edit profile"
               >
                 Edit Profile
               </Button>
               <Button
-                variant="destructive"
-                className="flex-1 hover:bg-red-600 transition-colors duration-200"
+                className="flex-1 cursor-pointer  bg-red-500 text-white hover:bg-red-600 transition-colors duration-200"
                 aria-label="Delete account"
               >
                 Delete Account
