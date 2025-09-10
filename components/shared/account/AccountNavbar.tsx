@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 const pathNames = [
   { label: "Dashboard", url: "/dashboard" },
   { label: "Symptom Check", url: "/symptom-check" },
-  { label: "Profile", url: "/profile" },
+  { label: "My Profile", url: "/profile" },
   { label: "History", url: "/history" },
 ];
 

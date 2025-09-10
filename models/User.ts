@@ -43,6 +43,11 @@ const UserSchema = new Schema(
       type: String,
       enum: ["AA", "AS", "SS", "AC", "SC"],
     },
+    gender: {
+      type: String,
+      enum: ["Male", "Female", "Other"],
+      default: "Other",
+    },
   },
   { timestamps: true }
 );
