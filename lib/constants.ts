@@ -29,3 +29,24 @@ export const genderOptions = [
   { value: "female", label: "Female" },
   { value: "other", label: "Other" },
 ];
+
+export const booleanOptions = [
+  { value: "true", label: "Yes" },
+  { value: "false", label: "No" },
+];
+
+export const exerciseLevelOptions = [
+  { value: "none", label: "None" },
+  { value: "light", label: "Light" },
+  { value: "moderate", label: "Moderate" },
+  { value: "heavy", label: "Heavy" },
+];
+
+export const DietTypeOptions = [
+  { value: "balanced", label: "Balanced" },
+  { value: "high-protein", label: "High Protein" },
+  { value: "low-carb", label: "Low Carb" },
+  { value: "vegetarian", label: "Vegetarian" },
+  { value: "vegan", label: "Vegan" },
+  { value: "keto", label: "Keto" },
+];
