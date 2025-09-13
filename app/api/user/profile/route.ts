@@ -1,1 +1,3 @@
-export const PATCH = async (req: Request, res: Response) => {};
+export const PATCH = async () => {};
+
+export const DELETE = async () => {};
