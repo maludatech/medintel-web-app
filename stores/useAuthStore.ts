@@ -11,6 +11,10 @@ interface User {
   gender: string;
   bloodGroup: string;
   genotype: string;
+  smoking: string;
+  alcohol: string;
+  exerciseLevel: string;
+  dietType: string;
   registrationDate: string;
 }
 

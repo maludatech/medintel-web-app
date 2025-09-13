@@ -48,6 +48,33 @@ const UserSchema = new Schema(
       enum: ["male", "female", "other"],
       default: "other",
     },
+    alcohol: {
+      type: String,
+      enum: ["yes", "no"],
+      default: "no",
+    },
+    smoking: {
+      type: String,
+      enum: ["yes", "no"],
+      default: "no",
+    },
+    exerciseLevel: {
+      type: String,
+      enum: ["none", "light", "moderate", "heavy"],
+      default: "none",
+    },
+    dietType: {
+      type: String,
+      enum: [
+        "balanced",
+        "high-protein",
+        "low-carb",
+        "vegetarian",
+        "vegan",
+        "keto",
+      ],
+      default: "balanced",
+    },
   },
   { timestamps: true }
 );

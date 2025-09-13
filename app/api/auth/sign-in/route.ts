@@ -41,6 +41,10 @@ export const POST = async (req: Request) => {
         gender: existingUser.gender,
         bloodGroup: existingUser.bloodGroup,
         genotype: existingUser.genotype,
+        smoking: existingUser.smoking,
+        alcohol: existingUser.alcohol,
+        exerciseLevel: existingUser.exerciseLevel,
+        dietType: existingUser.dietType,
       },
       secretKey,
       { expiresIn: "3d" }

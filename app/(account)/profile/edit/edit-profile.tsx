@@ -104,6 +104,45 @@ export const EditProfile: React.FC<{ callbackUrl: string }> = ({
     formState: { errors },
   } = useForm<FormValues>({
     resolver: yupResolver<FormValues, any, FormValues>(schema as any),
+    defaultValues: {
+      username: user?.username || "",
+      bloodGroup:
+        (user?.bloodGroup as
+          | "A+"
+          | "A-"
+          | "B+"
+          | "B-"
+          | "AB+"
+          | "AB-"
+          | "O+"
+          | "O-"
+          | undefined) || undefined,
+      genotype:
+        (user?.genotype as "AA" | "AS" | "SS" | "AC" | "SC" | undefined) ||
+        undefined,
+      gender:
+        (user?.gender as "male" | "female" | "other" | undefined) || undefined,
+      smoking: user?.smoking ? "true" : "false", // Already matches schema
+      alcohol: user?.alcohol ? "true" : "false", // Already matches schema
+      exerciseLevel:
+        (user?.exerciseLevel as
+          | "none"
+          | "light"
+          | "moderate"
+          | "heavy"
+          | undefined) || undefined,
+      dietType:
+        (user?.dietType as
+          | "balanced"
+          | "high-protein"
+          | "low-carb"
+          | "vegetarian"
+          | "vegan"
+          | "keto"
+          | undefined) || undefined,
+      password: "",
+      confirmPassword: "",
+    },
   });
 
   useEffect(() => {
