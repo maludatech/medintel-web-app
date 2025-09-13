@@ -23,7 +23,6 @@ interface User {
     | "keto";
   registrationDate: string;
 }
-
 interface AuthState {
   user: User | null;
   login: (user: User) => void;

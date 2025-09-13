@@ -20,9 +20,19 @@ interface CustomJwtPayload {
   email: string;
   username: string;
   dateOfBirth: string;
-  gender: string;
-  bloodGroup: string;
-  genotype: string;
+  gender: "male" | "female" | "other";
+  bloodGroup: "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-";
+  genotype: "AA" | "AS" | "SS" | "AC" | "SC";
+  smoking: "yes" | "no";
+  alcohol: "yes" | "no";
+  exerciseLevel: "none" | "light" | "moderate" | "heavy";
+  dietType:
+    | "balanced"
+    | "high-protein"
+    | "low-carb"
+    | "vegetarian"
+    | "vegan"
+    | "keto";
 }
 
 interface User {
@@ -31,9 +41,19 @@ interface User {
   email: string;
   username: string;
   dateOfBirth: string;
-  gender: string;
-  bloodGroup: string;
-  genotype: string;
+  gender: "male" | "female" | "other";
+  bloodGroup: "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-";
+  genotype: "AA" | "AS" | "SS" | "AC" | "SC";
+  smoking: "yes" | "no";
+  alcohol: "yes" | "no";
+  exerciseLevel: "none" | "light" | "moderate" | "heavy";
+  dietType:
+    | "balanced"
+    | "high-protein"
+    | "low-carb"
+    | "vegetarian"
+    | "vegan"
+    | "keto";
   registrationDate: string;
 }
 
@@ -131,6 +151,10 @@ export const SignInForm: React.FC<{ callbackUrl: string }> = ({
           gender: decodedToken.gender,
           bloodGroup: decodedToken.bloodGroup,
           genotype: decodedToken.genotype,
+          alcohol: decodedToken.alcohol,
+          smoking: decodedToken.smoking,
+          exerciseLevel: decodedToken.exerciseLevel,
+          dietType: decodedToken.dietType,
           registrationDate,
         };
         login(user);
