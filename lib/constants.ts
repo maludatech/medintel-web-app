@@ -31,8 +31,8 @@ export const genderOptions = [
 ];
 
 export const booleanOptions = [
-  { value: "true", label: "Yes" },
-  { value: "false", label: "No" },
+  { value: "yes", label: "Yes" },
+  { value: "no", label: "No" },
 ];
 
 export const exerciseLevelOptions = [

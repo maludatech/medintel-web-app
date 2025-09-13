@@ -50,12 +50,12 @@ const schema = yup.object().shape({
     .required("Gender is required"),
   smoking: yup
     .string()
-    .oneOf(["true", "false"], "Please select a valid value")
+    .oneOf(["yes", "no"], "Please select a valid value")
     .required("Smoking is required"),
   alcohol: yup
     .string()
-    .oneOf(["true", "false"], "Please select a valid value")
-    .required("Smoking is required"),
+    .oneOf(["yes", "no"], "Please select a valid value")
+    .required("Alcohol is required"),
   exerciseLevel: yup
     .string()
     .oneOf(
@@ -122,8 +122,8 @@ export const EditProfile: React.FC<{ callbackUrl: string }> = ({
         undefined,
       gender:
         (user?.gender as "male" | "female" | "other" | undefined) || undefined,
-      smoking: user?.smoking ? "true" : "false", // Already matches schema
-      alcohol: user?.alcohol ? "true" : "false", // Already matches schema
+      smoking: user?.smoking || "no",
+      alcohol: user?.alcohol || "no",
       exerciseLevel:
         (user?.exerciseLevel as
           | "none"

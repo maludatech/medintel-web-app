@@ -8,13 +8,19 @@ interface User {
   email: string;
   username: string;
   dateOfBirth: string;
-  gender: string;
-  bloodGroup: string;
-  genotype: string;
-  smoking: string;
-  alcohol: string;
-  exerciseLevel: string;
-  dietType: string;
+  gender: "male" | "female" | "other";
+  bloodGroup: "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-";
+  genotype: "AA" | "AS" | "SS" | "AC" | "SC";
+  smoking: "yes" | "no";
+  alcohol: "yes" | "no";
+  exerciseLevel: "none" | "light" | "moderate" | "heavy";
+  dietType:
+    | "balanced"
+    | "high-protein"
+    | "low-carb"
+    | "vegetarian"
+    | "vegan"
+    | "keto";
   registrationDate: string;
 }
 
