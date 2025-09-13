@@ -1,19 +1,22 @@
 "use client";
 
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { ThemeToggle } from "../ThemeToggle";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import images from "@/public/assets/images";
-import { usePathname } from "next/navigation";
 
 const pathNames = [
   { label: "Dashboard", url: "/dashboard" },
   { label: "Symptom Check", url: "/symptom-check" },
   { label: "My Profile", url: "/profile" },
+  { label: "Edit Profile", url: "/profile/edit" },
   { label: "History", url: "/history" },
 ];
 
 export const AccountNavbar = () => {
+  const { user } = useAuthStore();
   const currentDate = new Date()
     .toLocaleDateString("en-GB", {
       day: "numeric",
@@ -52,7 +55,9 @@ export const AccountNavbar = () => {
           />
           <ThemeToggle />
           <Image
-            src={images.profile}
+            src={
+              user?.gender == "male" ? images.profileMale : images.profileFemale
+            }
             alt="Profile"
             width={40}
             height={40}

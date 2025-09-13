@@ -111,7 +111,11 @@ export default function AppSidebar() {
           <SidebarGroupContent className="flex flex-col gap-6">
             <div className="flex flex-col items-center justify-center gap-2 mb-4">
               <Image
-                src={images.profile}
+                src={
+                  user?.gender == "male"
+                    ? images.profileMale
+                    : images.profileFemale
+                }
                 width={50}
                 height={50}
                 alt="User Avatar"

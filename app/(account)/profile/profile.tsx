@@ -61,11 +61,15 @@ export const Profile: React.FC<{ callbackUrl: string }> = ({ callbackUrl }) => {
           <CardContent className="flex flex-col gap-8 p-6">
             <div className="flex items-center gap-6">
               <Image
-                src={images.profile}
+                src={
+                  user?.gender == "male"
+                    ? images.profileMale
+                    : images.profileFemale
+                }
                 alt="Profile"
-                className="w-24 h-24 rounded-full object-cover border-2 border-[#122B10] transition-transform hover:scale-105 duration-300"
-                width={96}
-                height={96}
+                className="rounded-full object-cover border-2 border-[#122B10] transition-transform hover:scale-105 duration-300"
+                width={100}
+                height={100}
               />
               <div>
                 <h2 className="text-xl md:text-2xl font-semibold text-[#081207] dark:text-white">
@@ -118,6 +122,7 @@ export const Profile: React.FC<{ callbackUrl: string }> = ({ callbackUrl }) => {
                 variant="outline"
                 className="flex-1 cursor-pointer  bg-[#E7EAE7] dark:bg-[#212621] hover:bg-gray-200 dark:hover:bg-[#2A2A2A] transition-colors duration-200"
                 aria-label="Edit profile"
+                onClick={() => router.push("/profile/edit")}
               >
                 Edit Profile
               </Button>
@@ -161,8 +166,8 @@ export const Profile: React.FC<{ callbackUrl: string }> = ({ callbackUrl }) => {
                   <Button
                     size="sm"
                     variant="outline"
-                    className="text-[#122B10] dark:text-[#D6EFD4] hover:bg-gray-200 dark:hover:bg-[#2A2A2A] transition-colors duration-200"
-                    onClick={() => alert(`Edit ${factor.label}`)}
+                    className="text-[#122B10] dark:text-[#D6EFD4] hover:bg-gray-200 dark:hover:bg-[#2A2A2A] transition-colors duration-200 cursor-pointer"
+                    onClick={() => router.push("/profile/edit")}
                     aria-label={`Edit ${factor.label} lifestyle factor`}
                   >
                     Edit
