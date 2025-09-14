@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import images from "@/public/assets/images";
@@ -8,6 +8,7 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { AccountNavbar } from "@/components/shared/account/AccountNavbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { DeleteAccountModal } from "@/components/shared/account/DeleteAccountModal";
 
 // Helpers
 const getAge = (dob: string | Date) => {
@@ -41,6 +42,7 @@ const lifestyleFactors = [
 export const Profile: React.FC<{ callbackUrl: string }> = ({ callbackUrl }) => {
   const router = useRouter();
   const { user } = useAuthStore();
+  const [deleteAccountModalOpen, setDeleteAccountModalOpen] = useState(false);
 
   useEffect(() => {
     if (!user) router.push(callbackUrl);
@@ -129,6 +131,7 @@ export const Profile: React.FC<{ callbackUrl: string }> = ({ callbackUrl }) => {
               <Button
                 className="flex-1 cursor-pointer  bg-red-500 text-white hover:bg-red-600 transition-colors duration-200"
                 aria-label="Delete account"
+                onClick={() => setDeleteAccountModalOpen(true)}
               >
                 Delete Account
               </Button>
@@ -178,6 +181,10 @@ export const Profile: React.FC<{ callbackUrl: string }> = ({ callbackUrl }) => {
           </CardContent>
         </Card>
       </div>
+      <DeleteAccountModal
+        open={deleteAccountModalOpen}
+        onOpenChange={setDeleteAccountModalOpen}
+      />
     </section>
   );
 };
