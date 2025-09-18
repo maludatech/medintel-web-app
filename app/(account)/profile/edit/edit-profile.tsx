@@ -1,14 +1,15 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useFormContext } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "sonner";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { AccountNavbar } from "@/components/shared/account/AccountNavbar";
-import { toast } from "sonner";
 import { Card, CardContent } from "@/components/ui/card";
 import { FormField } from "@/components/shared/FormField";
 import images from "@/public/assets/images";
@@ -155,6 +156,7 @@ export const EditProfile: React.FC<{ callbackUrl: string }> = ({
     const processedData = {
       ...data,
       username: data.username.trim().toLowerCase(),
+      userId: user?.userId,
     };
 
     try {
@@ -163,7 +165,6 @@ export const EditProfile: React.FC<{ callbackUrl: string }> = ({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(processedData),
       });
-
       if (response.ok) {
         toast.success("Profile updated successfully!");
       } else {
@@ -315,6 +316,7 @@ export const EditProfile: React.FC<{ callbackUrl: string }> = ({
             </Button>
             <Button
               className="w-fit cursor-pointer hover:bg-primary/90 duration-200 transition"
+              disabled={isLoading}
               onClick={handleSubmit(onSubmit)}
             >
               Save Changes
