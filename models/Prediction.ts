@@ -4,8 +4,10 @@ const PredictionSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
   symptoms: [{ type: String, required: true }],
   predictedDisease: { type: String, required: true },
-  confidenceScore: { type: Number, required: true },
-  modelUsed: { type: String, default: "MedIntel-v1" },
+  confidence: { type: Number, required: true },
+  risk: { type: String, enum: ["Low", "Medium", "High"], required: true },
+  duration: String,
+  severity: String,
   createdAt: { type: Date, default: Date.now },
 });
 

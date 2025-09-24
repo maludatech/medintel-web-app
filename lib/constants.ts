@@ -5,6 +5,10 @@ export const APP_DESCRIPTION =
   process.env.APP_DESCRIPTION ||
   "MedIntel is a research-backed application designed to analyze symptoms and predict potential diseases with AI accuracy.";
 
+export const API_ENDPOINT =
+  process.env.NEXT_PUBLIC_API_ENDPOINT ||
+  "https://fastapi-medintel-backend.onrender.com";
+
 export const bloodGroupOptions = [
   { value: "A+", label: "A+" },
   { value: "A-", label: "A-" },

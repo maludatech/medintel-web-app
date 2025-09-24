@@ -2,7 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import { Search } from "lucide-react";
 import { AccountNavbar } from "@/components/shared/account/AccountNavbar";
+import { toast } from "sonner";
 import { useAuthStore } from "@/stores/useAuthStore";
 import {
   Card,
@@ -20,9 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
 
-// Symptoms extracted from your dataset
 const SYMPTOM_LIST = [
   "fever",
   "cough",
@@ -56,7 +58,6 @@ export const SymptomChecker: React.FC<{ callbackUrl: string }> = ({
     }
   }, [user]);
 
-  // Filter suggestions based on search
   useEffect(() => {
     if (!search.trim()) {
       setFiltered([]);
@@ -84,27 +85,129 @@ export const SymptomChecker: React.FC<{ callbackUrl: string }> = ({
     setResults([]);
 
     try {
-      // 🔥 Hook to backend API
-      const res = await fetch("/api/analyze", {
+      const res = await fetch("/api/user/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          userId: user?.userId,
           symptoms: selectedSymptoms,
           duration,
           severity,
         }),
       });
 
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => null);
+        toast.error(
+          errorData?.error || "Something went wrong analyzing your symptoms."
+        );
+        setResults([]);
+        return;
+      }
+
       const data = await res.json();
-      setResults(data.conditions); // [{ name, likelihood, recommendation, risk }, ...]
+
+      let parsed: any[] = [];
+      if (Array.isArray(data.conditions)) {
+        parsed = data.conditions;
+      } else if (data.predicted_disease) {
+        parsed = [
+          {
+            name: data.predicted_disease,
+            likelihood: Math.round((data.confidence ?? 0) * 100),
+            recommendation: "Consult a doctor if symptoms persist.",
+            risk:
+              (data.confidence ?? 0) > 0.7
+                ? "High"
+                : (data.confidence ?? 0) > 0.4
+                  ? "Medium"
+                  : "Low",
+          },
+        ];
+      }
+
+      if (parsed.length === 0) {
+        toast.warning("No conditions could be predicted. Try again.");
+      }
+
+      setResults(parsed);
     } catch (err) {
       console.error("Error analyzing:", err);
+      toast.error("Network error. Please check your connection and retry.");
+      setResults([]);
     } finally {
       setLoading(false);
     }
   };
 
-  // Reset to form
+  const handleDownloadReport = () => {
+    if (results.length === 0) return;
+
+    const doc = new jsPDF();
+
+    // === Header Branding ===
+    doc.setFillColor(34, 197, 94); // Tailwind green-500
+    doc.rect(0, 0, 220, 30, "F"); // green banner
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(18);
+    doc.text("MedIntel AI - Symptom Report", 14, 20);
+
+    // Reset text color
+    doc.setTextColor(0, 0, 0);
+
+    // === Patient Info Section ===
+    doc.setFontSize(12);
+    doc.text(`Patient: ${user?.name ?? "Anonymous"}`, 14, 40);
+    doc.text(`Duration: ${duration}`, 14, 48);
+    doc.text(`Severity: ${severity}`, 14, 56);
+
+    // === Results Table ===
+    const tableData = results.map((r: any, i: number) => [
+      i + 1,
+      r.name,
+      `${r.likelihood ?? 0}%`,
+      r.risk,
+      r.recommendation,
+    ]);
+
+    autoTable(doc, {
+      startY: 70,
+      head: [["#", "Condition", "Likelihood", "Risk", "Recommendation"]],
+      body: tableData,
+      styles: {
+        fontSize: 11,
+        cellPadding: 4,
+      },
+      headStyles: {
+        fillColor: [34, 197, 94], // green header
+        textColor: [255, 255, 255],
+        halign: "center",
+      },
+      bodyStyles: {
+        valign: "middle",
+      },
+      columnStyles: {
+        0: { halign: "center", cellWidth: 10 },
+        2: { halign: "center", cellWidth: 30 },
+        3: { halign: "center", cellWidth: 25 },
+        4: { cellWidth: 80 },
+      },
+    });
+
+    // === Disclaimer Section ===
+    let finalY = (doc as any).lastAutoTable.finalY || 100;
+    doc.setTextColor(120, 120, 120);
+    doc.setFontSize(10);
+    doc.text(
+      "Disclaimer: This report is AI-generated and not a medical diagnosis.\nAlways consult a qualified healthcare professional for medical advice.",
+      14,
+      finalY + 15
+    );
+
+    // Save
+    doc.save("medintel_report.pdf");
+  };
+
   const resetForm = () => {
     setResults([]);
     setLoading(false);
@@ -116,7 +219,7 @@ export const SymptomChecker: React.FC<{ callbackUrl: string }> = ({
 
       <div className="flex items-center justify-center w-full">
         <Card className="max-w-lg w-full px-2 py-4 flex flex-col gap-8">
-          {/* 🟢 Step 1: Loading */}
+          {/* Loading */}
           {loading && results.length === 0 && (
             <CardContent className="flex flex-col items-center justify-center h-64 gap-4">
               <div className="w-6 h-6 border-4 border-green-500 border-t-transparent rounded-full animate-spin" />
@@ -126,7 +229,7 @@ export const SymptomChecker: React.FC<{ callbackUrl: string }> = ({
             </CardContent>
           )}
 
-          {/* 🟢 Step 2: Results */}
+          {/* Results */}
           {!loading && results.length > 0 && (
             <CardContent className="flex flex-col gap-6">
               <div className="text-center">
@@ -158,18 +261,35 @@ export const SymptomChecker: React.FC<{ callbackUrl: string }> = ({
                       {r.risk}
                     </span>
                   </div>
-                  <p className="text-sm">{r.likelihood}% Likely</p>
-                  <p className="text-xs text-gray-600 dark:text-gray-300">
-                    {r.recommendation}
-                  </p>
+                  {r.likelihood !== undefined && (
+                    <p className="text-sm">{r.likelihood}% Likely</p>
+                  )}
+                  {r.recommendation && (
+                    <p className="text-xs text-gray-600 dark:text-gray-300">
+                      {r.recommendation}
+                    </p>
+                  )}
                 </div>
               ))}
 
               <div className="flex gap-3 w-full">
-                <Button variant="outline" className="w-1/2 cursor-pointer">
+                <Button
+                  variant="outline"
+                  onClick={() =>
+                    window.open(
+                      "https://www.google.com/maps/search/doctor+near+me",
+                      "_blank"
+                    )
+                  }
+                  className="w-1/2 cursor-pointer"
+                >
                   Find a Doctor
                 </Button>
-                <Button variant="outline" className="w-1/2 cursor-pointer">
+                <Button
+                  variant="outline"
+                  onClick={handleDownloadReport}
+                  className="w-1/2 cursor-pointer"
+                >
                   Download Report
                 </Button>
               </div>
@@ -183,7 +303,7 @@ export const SymptomChecker: React.FC<{ callbackUrl: string }> = ({
             </CardContent>
           )}
 
-          {/* 🟢 Default: Form */}
+          {/* Form */}
           {!loading && results.length === 0 && (
             <>
               <CardHeader className="flex flex-col gap-4 items-center justify-center text-center">
@@ -216,7 +336,6 @@ export const SymptomChecker: React.FC<{ callbackUrl: string }> = ({
                     />
                   </div>
 
-                  {/* Search Suggestions */}
                   {filtered.length > 0 && (
                     <ul className="absolute top-full mt-1 w-full bg-white dark:bg-[#0A1809] border rounded-md shadow-md z-10 max-h-40 overflow-y-auto">
                       {filtered.map((sym, i) => (
@@ -279,7 +398,7 @@ export const SymptomChecker: React.FC<{ callbackUrl: string }> = ({
                   </Select>
                 </div>
 
-                {/* Symptom Severity */}
+                {/* Severity */}
                 <div>
                   <h3 className="font-semibold mb-1 text-[#081207] dark:text-[#E7EAE7]">
                     Symptom Severity
@@ -301,7 +420,6 @@ export const SymptomChecker: React.FC<{ callbackUrl: string }> = ({
                   </div>
                 </div>
 
-                {/* Submit */}
                 <Button
                   onClick={handleAnalyze}
                   disabled={
