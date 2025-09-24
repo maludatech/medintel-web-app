@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDb } from "@/lib/dbConnect";
 import User from "@/models/User";
-import History from "@/models/History";
 import Prediction from "@/models/Prediction";
 import { API_ENDPOINT } from "@/lib/constants";
 import mongoose from "mongoose";
@@ -81,19 +80,6 @@ export async function POST(req: NextRequest) {
       duration,
       severity,
     });
-
-    // ✅ Attach prediction to user’s history
-    let history = await History.findOne({ user: userId });
-    if (!history) {
-      history = await History.create({
-        user: userId,
-        predictions: [prediction._id],
-      });
-    } else {
-      history.predictions.push(prediction._id);
-      history.updatedAt = new Date();
-      await history.save();
-    }
 
     // Response for frontend
     const conditions = [
