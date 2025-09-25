@@ -231,7 +231,7 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
                   </Link>
                 ))}
               </div>
-              <Card className="dark:bg-[#0D0D0D] p-4 w-full flex flex-col gap-2">
+              <Card className="dark:bg-[#0D0D0D] p-4 w-full flex flex-col gap-1">
                 <h2 className="text-base font-semibold text-[#081207] dark:text-white">
                   AI Recommendations
                 </h2>
