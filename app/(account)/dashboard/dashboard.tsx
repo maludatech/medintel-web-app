@@ -6,7 +6,6 @@ import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import {
   Activity,
-  BellDot,
   ChartLine,
   ChevronRight,
   CloudCheck,
@@ -26,6 +25,24 @@ interface QuickAccess {
   label: string;
   url: string;
   icon: React.ReactNode;
+}
+
+interface DashboardData {
+  user: { name: string; email: string };
+  lastPrediction: {
+    condition: string;
+    confidence: number;
+    risk: "Low" | "Moderate" | "High";
+    createdAt: string;
+  } | null;
+  accuracy: string;
+  monthlySymptoms: number;
+  recentPredictions: {
+    condition: string;
+    confidence: string;
+    risk: "Low" | "Moderate" | "High";
+    date: string;
+  }[];
 }
 
 const healthTips: string[] = [
@@ -60,20 +77,9 @@ const quickAccess: QuickAccess[] = [
 ];
 
 const AIRecommendations: string[] = [
-  "Incorporate more leafy greens in you body",
-  "Get at least 20 minutes pre-walking per day",
+  "Incorporate more leafy greens in your diet",
+  "Get at least 20 minutes of walking per day",
   "Consider an annual cholesterol test",
-];
-
-const dummyData = [
-  { date: "1/1", predictions: 4 },
-  { date: "3/3", predictions: 2 },
-  { date: "1/1", predictions: 3 },
-  { date: "1/1", predictions: 3 },
-  { date: "1/1", predictions: 4 },
-  { date: "1/1", predictions: 6 },
-  { date: "1/1", predictions: 3 },
-  { date: "1/1", predictions: 3 },
 ];
 
 export const Dashboard: React.FC<{ callbackUrl: string }> = ({
@@ -81,17 +87,47 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
 }) => {
   const router = useRouter();
   const { user } = useAuthStore();
-
-  // Random health tip state
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(
+    null
+  );
   const [randomTip, setRandomTip] = useState<string>(
     healthTips[Math.floor(Math.random() * healthTips.length)]
   );
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
+  // Fetch dashboard data
   useEffect(() => {
-    if (!user) {
+    const fetchDashboardData = async () => {
+      if (!user?.userId) {
+        router.push(callbackUrl);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const response = await fetch(
+          `/api/user/dashboard?userId=${user.userId}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch dashboard data");
+        }
+        const data = await response.json();
+        setDashboardData(data);
+      } catch (err) {
+        setError("Error loading dashboard data");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user) {
+      fetchDashboardData();
+    } else {
       router.push(callbackUrl);
     }
-  }, [user]);
+  }, [user, callbackUrl, router]);
 
   // Change tip every 30 seconds
   useEffect(() => {
@@ -112,9 +148,7 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
         ? "Good Afternoon"
         : "Good Evening";
 
-  const firstName = user?.name?.split(" ")[0] || "User";
-
-  const confidence = 85;
+  const firstName = dashboardData?.user?.name?.split(" ")[0] || "User";
 
   return (
     <section className="container mx-auto flex flex-col gap-8 md:gap-10 px-6 py-4 md:py-2 w-full">
@@ -131,7 +165,7 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
         <div className="flex flex-col lg:flex-row gap-8 md:gap-6 justify-between">
           <div className="flex flex-col gap-8">
             {/* Snapshot Cards */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
               <Card className="rounded-xl border p-4 flex flex-col gap-2 shadow-sm bg-[#FFFCF2] dark:bg-[#473300] text-[#0B1909] dark:text-[#B6BDB5]">
                 <div className="flex justify-between items-center">
                   <p className="text-sm text-[#BB7A01] dark:text-[#D58B01]">
@@ -139,11 +173,13 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
                   </p>
                   <Activity className="text-[#BB7A01] dark:text-[#D58B01]" />
                 </div>
-                <h2 className="text-xl font-semibold">Migraine</h2>
+                <h2 className="text-xl font-semibold">
+                  {dashboardData?.lastPrediction?.condition || "None"}
+                </h2>
                 <p className="text-sm text-muted-foreground">
                   Confidence:{" "}
                   <span className="font-medium text-[#0B1909] dark:text-[#B6BDB5]">
-                    85%
+                    {(dashboardData?.lastPrediction?.confidence ?? 0) * 100}%
                   </span>
                 </p>
               </Card>
@@ -155,7 +191,9 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
                   </p>
                   <CloudCheck className="text-[#1FCC10] dark:text-[#24E412]" />
                 </div>
-                <h2 className="text-xl font-semibold">91%</h2>
+                <h2 className="text-xl font-semibold">
+                  {dashboardData?.accuracy || "0%"}
+                </h2>
                 <p className="text-sm text-muted-foreground">
                   Based on last 20 predictions
                 </p>
@@ -169,25 +207,10 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
                   <NotepadTextDashed className="text-[#07CAD8] dark:text-[#07CAD8]" />
                 </div>
                 <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-                  12
+                  {dashboardData?.monthlySymptoms || 0}
                 </h2>
                 <p className="text-sm text-muted-foreground">This month</p>
               </Card>
-
-              <div className="rounded-xl border p-4 flex flex-col gap-2 shadow-sm bg-[#D2E2FF] dark:bg-[#000D26] text-[#0B1909] dark:text-[#B6BDB5]">
-                <div className="flex justify-between items-center">
-                  <p className="text-sm text-[#0540AF] dark:text-[#064AC8]">
-                    Reminders
-                  </p>
-                  <BellDot className="text-[#0540AF] dark:text-[#064AC8]" />
-                </div>
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-                  2 Active
-                </h2>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Check your cholesterol & schedule appointment
-                </p>
-              </div>
             </div>
             <div className="flex flex-col lg:flex-row gap-8 w-full">
               <div className="flex flex-col gap-2 w-full">
@@ -224,7 +247,9 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
               </Card>
             </div>
             {/* Recent Prediction Table */}
-            <RecentPredictions />
+            <RecentPredictions
+              predictions={dashboardData?.recentPredictions || []}
+            />
           </div>
 
           <div className="flex flex-col gap-4">
@@ -253,25 +278,25 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
               <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
                 {/* Left side: Recent predictions */}
                 <div className="flex flex-col gap-2 flex-1 text-sm">
-                  {[
-                    { disease: "Migraine", confidence: "85%" },
-                    { disease: "Diabetes", confidence: "72%" },
-                    { disease: "Hypertension", confidence: "60%" },
-                  ].map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="flex justify-between py-2 px-4 rounded-2xl border bg-white dark:bg-[#1A1A1A]"
-                    >
-                      <span>{item.disease}</span>
-                      <span className="font-medium">{item.confidence}</span>
-                    </div>
-                  ))}
+                  {(dashboardData?.recentPredictions || [])
+                    .slice(0, 3)
+                    .map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="flex justify-between py-2 px-4 rounded-2xl border bg-white dark:bg-[#1A1A1A]"
+                      >
+                        <span>{item.condition}</span>
+                        <span className="font-medium">{item.confidence}</span>
+                      </div>
+                    ))}
                 </div>
 
                 {/* Right side: Confidence circle */}
                 <div className="flex items-center justify-center">
                   <div className="flex flex-col items-center justify-center w-24 h-24 rounded-full bg-[#FFD504] text-gray-900 shadow-md">
-                    <span className="text-xl font-bold">{confidence}%</span>
+                    <span className="text-xl font-bold">
+                      {dashboardData?.lastPrediction?.confidence || 0}%
+                    </span>
                     <span className="text-xs font-medium text-center leading-tight">
                       Confidence
                     </span>
@@ -280,7 +305,27 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
               </div>
             </Card>
             {/* Symptom Trend Chart */}
-            <SymptomTrend data={dummyData} />
+            <SymptomTrend
+              data={
+                dashboardData?.recentPredictions
+                  ?.reduce(
+                    (acc, pred) => {
+                      const existing = acc.find((d) => d.date === pred.date);
+                      if (existing) {
+                        existing.predictions += 1;
+                      } else {
+                        acc.push({ date: pred.date, predictions: 1 });
+                      }
+                      return acc;
+                    },
+                    [] as { date: string; predictions: number }[]
+                  )
+                  .sort(
+                    (a, b) =>
+                      new Date(a.date).getTime() - new Date(b.date).getTime()
+                  ) || []
+              }
+            />
           </div>
         </div>
       </div>

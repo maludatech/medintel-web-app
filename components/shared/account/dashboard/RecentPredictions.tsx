@@ -1,4 +1,3 @@
-// components/dashboard/RecentPredictions.tsx
 "use client";
 
 import { Card } from "@/components/ui/card";
@@ -11,40 +10,15 @@ interface Prediction {
   risk: "Low" | "Moderate" | "High";
 }
 
-const predictions: Prediction[] = [
-  {
-    date: "Aug 8, 2025",
-    condition: "Possible Migraine",
-    confidence: "85%",
-    risk: "Moderate",
-  },
-  {
-    date: "Aug 5, 2025",
-    condition: "Hyper Tension",
-    confidence: "92%",
-    risk: "Moderate",
-  },
-  {
-    date: "Jul 29, 2025",
-    condition: "Heart Disease",
-    confidence: "60%",
-    risk: "Low",
-  },
-  {
-    date: "Jul 28, 2025",
-    condition: "Low Anemia",
-    confidence: "90%",
-    risk: "High",
-  },
-];
+export const RecentPredictions: React.FC<{ predictions: Prediction[] }> = ({
+  predictions,
+}) => {
+  const riskColors: Record<string, string> = {
+    Low: "bg-green-200 text-green-800",
+    Moderate: "bg-yellow-200 text-yellow-800",
+    High: "bg-red-200 text-red-800",
+  };
 
-const riskColors: Record<string, string> = {
-  Low: "bg-green-200 text-green-800",
-  Moderate: "bg-yellow-200 text-yellow-800",
-  High: "bg-red-200 text-red-800",
-};
-
-export const RecentPredictions = () => {
   return (
     <Card className="rounded-xl border p-4 shadow-sm dark:bg-[#0D0D0D]">
       <div className="flex justify-between items-center mb-3">
@@ -83,6 +57,13 @@ export const RecentPredictions = () => {
                 </td>
               </tr>
             ))}
+            {predictions.length === 0 && (
+              <tr>
+                <td colSpan={4} className="py-2 px-2 text-center">
+                  No predictions available
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
