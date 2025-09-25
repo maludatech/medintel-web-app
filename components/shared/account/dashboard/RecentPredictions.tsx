@@ -2,6 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface Prediction {
   date: string;
@@ -25,9 +26,12 @@ export const RecentPredictions: React.FC<{ predictions: Prediction[] }> = ({
         <h2 className="text-lg font-semibold text-[#081207] dark:text-white">
           Recent Prediction
         </h2>
-        <span className="text-sm font-medium text-green-600 cursor-pointer hover:underline">
+        <Link
+          href={"/history"}
+          className="text-sm font-medium text-green-600 cursor-pointer hover:underline"
+        >
           View More
-        </span>
+        </Link>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
