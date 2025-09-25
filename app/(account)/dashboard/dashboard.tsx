@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "sonner";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import {
   Activity,
   ChartLine,
@@ -15,7 +17,9 @@ import {
   SquareArrowUpRight,
   UserPen,
   SquareCheckBig,
+  Loader2,
 } from "lucide-react";
+import Loading from "./loading";
 import { RecentPredictions } from "@/components/shared/account/dashboard/RecentPredictions";
 import { SymptomTrend } from "@/components/shared/account/dashboard/SymptomTrend";
 import { AccountNavbar } from "@/components/shared/account/AccountNavbar";
@@ -59,21 +63,9 @@ const healthTips: string[] = [
 ];
 
 const quickAccess: QuickAccess[] = [
-  {
-    label: "Make Prediction",
-    url: "/symptom-check",
-    icon: <ChartLine />,
-  },
-  {
-    label: "Update Medical Info",
-    url: "/profile",
-    icon: <UserPen />,
-  },
-  {
-    label: "Export Report",
-    url: "/history",
-    icon: <SquareArrowUpRight />,
-  },
+  { label: "Make Prediction", url: "/symptom-check", icon: <ChartLine /> },
+  { label: "Update Medical Info", url: "/profile", icon: <UserPen /> },
+  { label: "Export Report", url: "/history", icon: <SquareArrowUpRight /> },
 ];
 
 const AIRecommendations: string[] = [
@@ -100,23 +92,32 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
   useEffect(() => {
     const fetchDashboardData = async () => {
       if (!user?.userId) {
+        console.log("No userId, redirecting to callback URL");
         router.push(callbackUrl);
         return;
       }
 
       try {
         setLoading(true);
+        setError(null);
+        console.log("Fetching dashboard data for userId:", user.userId);
         const response = await fetch(
           `/api/user/dashboard?userId=${user.userId}`
         );
         if (!response.ok) {
-          throw new Error("Failed to fetch dashboard data");
+          throw new Error(`HTTP error: ${response.status}`);
         }
         const data = await response.json();
+        console.log("API response:", JSON.stringify(data, null, 2));
+        console.log(
+          "Recent predictions:",
+          JSON.stringify(data.recentPredictions, null, 2)
+        );
         setDashboardData(data);
       } catch (err) {
-        setError("Error loading dashboard data");
-        console.error(err);
+        setError("Failed to load your health data. Please try again.");
+        toast.error("Error loading your data");
+        console.error("Fetch error:", err);
       } finally {
         setLoading(false);
       }
@@ -125,6 +126,7 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
     if (user) {
       fetchDashboardData();
     } else {
+      console.log("No user, redirecting to callback URL");
       router.push(callbackUrl);
     }
   }, [user, callbackUrl, router]);
@@ -133,10 +135,43 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
   useEffect(() => {
     const interval = setInterval(() => {
       setRandomTip(healthTips[Math.floor(Math.random() * healthTips.length)]);
-    }, 30000); // 30 seconds
-
+    }, 30000);
     return () => clearInterval(interval);
   }, []);
+
+  // Aggregate data for SymptomTrend
+  const symptomTrendData =
+    dashboardData?.recentPredictions
+      ?.reduce(
+        (acc, pred) => {
+          if (!pred.date) {
+            console.warn("Prediction missing date:", pred);
+            return acc;
+          }
+          try {
+            const date = new Date(pred.date);
+            if (isNaN(date.getTime())) {
+              console.warn("Invalid date format:", pred.date, pred);
+              return acc;
+            }
+            const existing = acc.find((d) => d.date === pred.date);
+            if (existing) {
+              existing.predictions += 1;
+            } else {
+              acc.push({ date: pred.date, predictions: 1 });
+            }
+          } catch (e) {
+            console.warn("Error parsing date:", pred.date, e);
+          }
+          return acc;
+        },
+        [] as { date: string; predictions: number }[]
+      )
+      .sort(
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+      ) || [];
+
+  console.log("SymptomTrend data:", JSON.stringify(symptomTrendData, null, 2));
 
   // Greeting based on current time (WAT)
   const now = new Date();
@@ -149,6 +184,25 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
         : "Good Evening";
 
   const firstName = dashboardData?.user?.name?.split(" ")[0] || "User";
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return (
+      <section className="container mx-auto flex flex-col gap-8 px-6 py-4 w-full">
+        <AccountNavbar />
+        <div className="flex flex-col gap-4 items-center">
+          <h1 className="text-2xl font-semibold">{`${greeting}, ${firstName}`}</h1>
+          <Card className="p-4 w-full max-w-md text-center">
+            <p className="text-muted-foreground mb-4">{error}</p>
+            <Button onClick={() => window.location.reload()}>Retry</Button>
+          </Card>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="container mx-auto flex flex-col gap-8 md:gap-10 px-6 py-4 md:py-2 w-full">
@@ -179,7 +233,7 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
                 <p className="text-sm text-muted-foreground">
                   Confidence:{" "}
                   <span className="font-medium text-[#0B1909] dark:text-[#B6BDB5]">
-                    {(dashboardData?.lastPrediction?.confidence ?? 0) * 100}%
+                    {dashboardData?.lastPrediction?.confidence || 0}%
                   </span>
                 </p>
               </Card>
@@ -195,7 +249,7 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
                   {dashboardData?.accuracy || "0%"}
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  Based on last 20 predictions
+                  Average confidence of all predictions
                 </p>
               </Card>
 
@@ -246,14 +300,12 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
                 ))}
               </Card>
             </div>
-            {/* Recent Prediction Table */}
             <RecentPredictions
               predictions={dashboardData?.recentPredictions || []}
             />
           </div>
 
           <div className="flex flex-col gap-4">
-            {/* Health Tip */}
             <Card className="rounded-xl border p-4 shadow-sm dark:bg-[#0D0D0D]">
               <div className="flex gap-1 items-center">
                 <Lightbulb className="text-[#0B1909] dark:text-white" />
@@ -269,63 +321,49 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
                 {randomTip}
               </p>
             </Card>
-            {/* Health Summary */}
             <Card className="rounded-xl border p-4 shadow-sm dark:bg-[#0D0D0D] flex flex-col gap-4">
               <h1 className="text-lg text-[#0B1909] dark:text-white">
                 Your Health Summary
               </h1>
-
-              <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-                {/* Left side: Recent predictions */}
-                <div className="flex flex-col gap-2 flex-1 text-sm">
-                  {(dashboardData?.recentPredictions || [])
-                    .slice(0, 3)
-                    .map((item, idx) => (
-                      <div
-                        key={idx}
-                        className="flex justify-between py-2 px-4 rounded-2xl border bg-white dark:bg-[#1A1A1A]"
-                      >
-                        <span>{item.condition}</span>
-                        <span className="font-medium">{item.confidence}</span>
-                      </div>
-                    ))}
-                </div>
-
-                {/* Right side: Confidence circle */}
-                <div className="flex items-center justify-center">
-                  <div className="flex flex-col items-center justify-center w-24 h-24 rounded-full bg-[#FFD504] text-gray-900 shadow-md">
-                    <span className="text-xl font-bold">
-                      {dashboardData?.accuracy || 0}
-                    </span>
-                    <span className="text-xs font-medium text-center leading-tight">
-                      Confidence
-                    </span>
+              {dashboardData?.recentPredictions?.length ? (
+                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+                  <div className="flex flex-col gap-2 flex-1 text-sm">
+                    {dashboardData.recentPredictions
+                      .slice(0, 3)
+                      .map((item, idx) => (
+                        <div
+                          key={idx}
+                          className="flex justify-between py-2 px-4 rounded-2xl border bg-white dark:bg-[#1A1A1A]"
+                        >
+                          <span>{item.condition}</span>
+                          <span className="font-medium">{item.confidence}</span>
+                        </div>
+                      ))}
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <div className="flex flex-col items-center justify-center w-24 h-24 rounded-full bg-[#FFD504] text-gray-900 shadow-md">
+                      <span className="text-xl font-bold">
+                        {dashboardData?.lastPrediction?.confidence || 0}%
+                      </span>
+                      <span className="text-xs font-medium text-center leading-tight">
+                        Confidence
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center gap-4 text-center text-muted-foreground py-4">
+                  <NotepadTextDashed size={24} className="text-[#55CC4B]" />
+                  <p>
+                    No recent predictions yet. Start by checking your symptoms!
+                  </p>
+                  <Button asChild variant="outline">
+                    <Link href="/symptom-check">Check Symptoms</Link>
+                  </Button>
+                </div>
+              )}
             </Card>
-            {/* Symptom Trend Chart */}
-            <SymptomTrend
-              data={
-                dashboardData?.recentPredictions
-                  ?.reduce(
-                    (acc, pred) => {
-                      const existing = acc.find((d) => d.date === pred.date);
-                      if (existing) {
-                        existing.predictions += 1;
-                      } else {
-                        acc.push({ date: pred.date, predictions: 1 });
-                      }
-                      return acc;
-                    },
-                    [] as { date: string; predictions: number }[]
-                  )
-                  .sort(
-                    (a, b) =>
-                      new Date(a.date).getTime() - new Date(b.date).getTime()
-                  ) || []
-              }
-            />
+            <SymptomTrend data={symptomTrendData} />
           </div>
         </div>
       </div>
