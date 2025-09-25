@@ -295,7 +295,7 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
                 <div className="flex items-center justify-center">
                   <div className="flex flex-col items-center justify-center w-24 h-24 rounded-full bg-[#FFD504] text-gray-900 shadow-md">
                     <span className="text-xl font-bold">
-                      {dashboardData?.lastPrediction?.confidence || 0}%
+                      {dashboardData?.accuracy || 0}
                     </span>
                     <span className="text-xs font-medium text-center leading-tight">
                       Confidence
