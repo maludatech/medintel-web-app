@@ -11,6 +11,7 @@ import {
   History,
   UserPen,
   LogOut,
+  Home,
 } from "lucide-react";
 
 import {
@@ -28,6 +29,7 @@ import { APP_NAME } from "@/lib/constants";
 import images from "@/public/assets/images";
 
 const items = [
+  { title: "Home", url: "/", icon: Home },
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
   { title: "Symptom Check", url: "/symptom-check", icon: BookCheck },
   { title: "History", url: "/history", icon: History },

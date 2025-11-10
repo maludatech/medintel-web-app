@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { BrainCircuit } from "lucide-react";
+import { BrainCircuit, LogOut } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { APP_NAME } from "@/lib/constants";
 import { MobileSidebar } from "./MobileSidebar";
@@ -28,7 +28,7 @@ const authenticatedNavLinks = [
 
 export const Navbar: React.FC = () => {
   const [authOpen, setAuthOpen] = useState(false);
-  const { user } = useAuthStore();
+  const { user, logout } = useAuthStore();
 
   return (
     <>
@@ -74,12 +74,22 @@ export const Navbar: React.FC = () => {
 
           <div className="hidden md:flex items-center gap-3">
             <ThemeToggle />
-            <Button
-              onClick={() => setAuthOpen(true)}
-              className="bg-foreground text-background px-4 py-2 rounded-md hover:opacity-90 hover:bg-foreground transition-colors cursor-pointer"
-            >
-              Get started
-            </Button>
+            {user ? (
+              <Button
+                onClick={() => logout()}
+                className="bg-foreground text-background px-4 py-2 rounded-md hover:opacity-90 hover:bg-foreground transition-colors cursor-pointer"
+              >
+                <LogOut />
+                Log Out
+              </Button>
+            ) : (
+              <Button
+                onClick={() => setAuthOpen(true)}
+                className="bg-foreground text-background px-4 py-2 rounded-md hover:opacity-90 hover:bg-foreground transition-colors cursor-pointer"
+              >
+                Get started
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
