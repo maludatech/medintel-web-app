@@ -50,7 +50,7 @@ export const Footer: React.FC = () => {
               Predict Health Issues Smarter with MedIntel
             </h2>
             <p className="text-base text-[#122B10] dark:text-[#DDE3DD] font-medium max-w-lg">
-              Leverage AI to identify potential diseases early, track your
+              Leverage ML to identify potential diseases early, track your
               health, and make informed decisions from one intelligent platform.
             </p>
             <button
