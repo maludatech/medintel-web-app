@@ -35,7 +35,7 @@ export const Hero: React.FC = () => {
             </h1>
             <p className="text-[#122B10] dark:text-[#DDE3DD] text-lg mb-8 font-[450]">
               Medintel is a research-backed that helps analyze symptoms and
-              predict potential diseases with AI accuracy in seconds. Built for
+              predict potential diseases with ML accuracy in seconds. Built for
               anyone who values their health.
             </p>
             <div className="flex gap-2">
