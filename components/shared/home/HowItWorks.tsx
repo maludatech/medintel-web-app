@@ -20,7 +20,7 @@ export const HowItWorks: React.FC = () => {
       image: images.howItWorks1,
     },
     {
-      title: "AI Analysis",
+      title: "ML Analysis",
       description: "Our algorithm matches your symptoms with medical data.",
       image: images.howItWorks2,
     },

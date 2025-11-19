@@ -12,7 +12,7 @@ interface WhyChooseMedIntel {
 export const About: React.FC = () => {
   const whyChooseMedIntel: WhyChooseMedIntel[] = [
     {
-      heading: "AI-Powered Symptom Checker",
+      heading: "ML-Powered Symptom Checker",
       body: "Get treated with more accurate health prediction.",
     },
     {
@@ -43,7 +43,7 @@ export const About: React.FC = () => {
             What is MedIntel?
           </h1>
           <p className="text-[17px] text-[#0B1909] dark:text-[#E9EDE8] max-w-4xl mt-2">
-            MedIntel is a cutting-edge AI-driven web and mobile platform
+            MedIntel is a cutting-edge ML-driven web and mobile platform
             designed to help users predict diseases based on symptoms.
             Leveraging machine learning and a vast medical database, it delivers
             fast, accurate, and personalized insights
