@@ -33,7 +33,7 @@ export const Testimonies: React.FC = () => {
     },
     {
       testimony:
-        "As someone who tracks their health daily, I love how fast and informative MedIntel is. The AI is smart and intuitive.",
+        "As someone who tracks their health daily, I love how fast and informative MedIntel is. The platform is smart and intuitive.",
       name: "Samuel O",
       role: "Developer",
     },
