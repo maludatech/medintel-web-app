@@ -27,7 +27,7 @@ export const Hero: React.FC = () => {
                 size={14}
               />
               <h2 className="text-[#1E471A] dark:text-[#DDE3DD] text-xs font-semibold">
-                AI Powered Diagnosis
+                ML Powered Diagnosis
               </h2>
             </div>
             <h1 className="text-4xl sm:text-5xl font-bold leading-tight text-black dark:text-[#DDE3DD] mb-2">
