@@ -233,7 +233,10 @@ export const Dashboard: React.FC<{ callbackUrl: string }> = ({
                 <p className="text-sm text-muted-foreground">
                   Confidence:{" "}
                   <span className="font-medium text-[#0B1909] dark:text-[#B6BDB5]">
-                    {dashboardData?.lastPrediction?.confidence || 0}%
+                    {(
+                      (dashboardData?.lastPrediction?.confidence ?? 0) * 100
+                    ).toFixed(0)}
+                    %
                   </span>
                 </p>
               </Card>

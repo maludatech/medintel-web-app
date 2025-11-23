@@ -146,8 +146,8 @@ export const SymptomChecker: React.FC<{ callbackUrl: string }> = ({
     const doc = new jsPDF();
 
     // === Header Branding ===
-    doc.setFillColor(34, 197, 94); // Tailwind green-500
-    doc.rect(0, 0, 220, 30, "F"); // green banner
+    doc.setFillColor(34, 197, 94);
+    doc.rect(0, 0, 220, 30, "F");
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(18);
     doc.text("MedIntel AI - Symptom Report", 14, 20);
@@ -161,8 +161,19 @@ export const SymptomChecker: React.FC<{ callbackUrl: string }> = ({
     doc.text(`Duration: ${duration}`, 14, 48);
     doc.text(`Severity: ${severity}`, 14, 56);
 
+    // === Selected Symptoms Section ===
+    doc.setFontSize(12);
+    doc.text("Selected Symptoms:", 14, 66);
+
+    const symptomsText = selectedSymptoms.length
+      ? selectedSymptoms.map((s) => s.replaceAll("_", " ")).join(", ")
+      : "None selected";
+
+    doc.setFontSize(11);
+    doc.text(symptomsText, 14, 74);
+
     // === Results Table ===
-    const tableData = results.map((r: any, i: number) => [
+    const tableData = results.map((r, i) => [
       i + 1,
       r.name,
       `${r.likelihood ?? 0}%`,
@@ -171,7 +182,7 @@ export const SymptomChecker: React.FC<{ callbackUrl: string }> = ({
     ]);
 
     autoTable(doc, {
-      startY: 70,
+      startY: 85, // shifted down
       head: [["#", "Condition", "Likelihood", "Risk", "Recommendation"]],
       body: tableData,
       styles: {
@@ -179,13 +190,11 @@ export const SymptomChecker: React.FC<{ callbackUrl: string }> = ({
         cellPadding: 4,
       },
       headStyles: {
-        fillColor: [34, 197, 94], // green header
+        fillColor: [34, 197, 94],
         textColor: [255, 255, 255],
         halign: "center",
       },
-      bodyStyles: {
-        valign: "middle",
-      },
+      bodyStyles: { valign: "middle" },
       columnStyles: {
         0: { halign: "center", cellWidth: 10 },
         2: { halign: "center", cellWidth: 30 },
@@ -194,8 +203,7 @@ export const SymptomChecker: React.FC<{ callbackUrl: string }> = ({
       },
     });
 
-    // === Disclaimer Section ===
-    let finalY = (doc as any).lastAutoTable.finalY || 100;
+    const finalY = (doc as any).lastAutoTable.finalY || 100;
     doc.setTextColor(120, 120, 120);
     doc.setFontSize(10);
     doc.text(
@@ -204,7 +212,6 @@ export const SymptomChecker: React.FC<{ callbackUrl: string }> = ({
       finalY + 15
     );
 
-    // Save
     doc.save("medintel_report.pdf");
   };
 
