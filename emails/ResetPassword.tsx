@@ -1,13 +1,13 @@
 import {
   Html,
+  Head,
   Body,
   Container,
   Text,
   Heading,
-  Button,
   Section,
-  Tailwind,
   Img,
+  Preview,
 } from "@react-email/components";
 
 interface PasswordResetEmailProps {
@@ -20,55 +20,152 @@ export default function PasswordResetEmail({
   resetUrl,
 }: PasswordResetEmailProps) {
   return (
-    <Html>
-      <Tailwind
-        config={{
-          theme: {
-            extend: {
-              colors: {
-                primary: "oklch(0.75 0.2 142)",
-                muted: "#6b7280",
-                background: "#ffffff",
-                foreground: "#111827",
-              },
-            },
-          },
-        }}
-      >
-        <Body className="bg-background text-foreground font-sans">
-          <Container className="mx-auto p-6 max-w-xl">
-            <Section className="bg-background rounded-lg shadow-lg border border-gray-200 p-8 text-center">
-              <Img
-                src="https://res.cloudinary.com/dlnvweuhv/image/upload/v1756344834/medintel-icon.png"
-                alt="MedIntel Logo"
-                width="150"
-                height="auto"
-                className="mx-auto mb-6"
-              />
-              <Heading className="text-2xl font-bold text-foreground mb-4">
-                Reset Your Password
-              </Heading>
-              <Text className="text-muted mb-4">
-                You requested a password reset for your MedIntel account (
-                {email}).
-              </Text>
-              <Button
-                href={resetUrl}
-                className="bg-primary text-white font-semibold py-3 px-6 rounded-md inline-block mb-4"
-              >
-                Reset Password
-              </Button>
-              <Text className="text-muted mb-4">
-                This link expires in 1 hour. If you didn’t request this, please
-                ignore this email.
-              </Text>
-              <Text className="text-muted text-sm">
-                © {new Date().getFullYear()} MedIntel. All rights reserved.
-              </Text>
-            </Section>
-          </Container>
-        </Body>
-      </Tailwind>
+    <Html lang="en">
+      <Head>
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+        `}</style>
+      </Head>
+      <Preview>Reset your MedIntel password — link expires in 1 hour</Preview>
+      <Body style={s.body}>
+        <Container style={s.container}>
+          {/* Header */}
+          <Section style={s.header}>
+            <Img
+              src="https://res.cloudinary.com/dlnvweuhv/image/upload/v1756344834/medintel-icon.png"
+              alt="MedIntel"
+              width="24"
+              height="24"
+              style={{ display: "block", marginBottom: "24px" }}
+            />
+            <Heading style={s.heading}>Reset your password</Heading>
+            <Text style={s.subtext}>
+              We received a request to reset the password for{" "}
+              <span style={s.emailSpan}>{email}</span>. Click the button below
+              to choose a new one.
+            </Text>
+          </Section>
+
+          {/* Button */}
+          <Section style={s.buttonSection}>
+            <a href={resetUrl} style={s.button}>
+              Reset password
+            </a>
+          </Section>
+
+          {/* Notes */}
+          <Section style={s.notes}>
+            <Text style={s.note}>This link expires in 1 hour.</Text>
+            <Text style={s.note}>
+              If you didn't request a password reset, you can safely ignore this
+              email — your password won't change.
+            </Text>
+          </Section>
+
+          {/* Divider */}
+          <div style={s.divider} />
+
+          {/* Footer */}
+          <Section style={s.footer}>
+            <Text style={s.footerText}>MedIntel · All rights reserved</Text>
+            <Text style={s.footerUrl}>
+              Or copy this link into your browser:{" "}
+              <a href={resetUrl} style={s.urlLink}>
+                {resetUrl}
+              </a>
+            </Text>
+          </Section>
+        </Container>
+      </Body>
     </Html>
   );
 }
+
+const s: Record<string, React.CSSProperties> = {
+  body: {
+    backgroundColor: "#f4f4f5",
+    fontFamily: "'Inter', 'Helvetica Neue', Arial, sans-serif",
+    margin: 0,
+    padding: 0,
+    WebkitFontSmoothing: "antialiased",
+  },
+  container: {
+    backgroundColor: "#ffffff",
+    maxWidth: "480px",
+    margin: "40px auto",
+    borderRadius: "12px",
+    padding: "40px 40px 32px",
+    border: "1px solid #e4e4e7",
+  },
+
+  header: {
+    marginBottom: "28px",
+  },
+  heading: {
+    color: "#09090b",
+    fontSize: "22px",
+    fontWeight: 600,
+    letterSpacing: "-0.02em",
+    lineHeight: "1.3",
+    margin: "0 0 12px",
+  },
+  subtext: {
+    color: "#52525b",
+    fontSize: "15px",
+    lineHeight: "1.6",
+    margin: 0,
+  },
+  emailSpan: {
+    color: "#09090b",
+    fontWeight: 500,
+  },
+
+  buttonSection: {
+    marginBottom: "28px",
+  },
+  button: {
+    backgroundColor: "#18181b",
+    borderRadius: "8px",
+    color: "#ffffff",
+    display: "inline-block",
+    fontSize: "15px",
+    fontWeight: 500,
+    padding: "13px 24px",
+    textDecoration: "none",
+    letterSpacing: "-0.01em",
+  },
+
+  notes: {
+    marginBottom: "28px",
+  },
+  note: {
+    color: "#71717a",
+    fontSize: "13px",
+    lineHeight: "1.6",
+    margin: "0 0 8px",
+  },
+
+  divider: {
+    height: "1px",
+    backgroundColor: "#f4f4f5",
+    margin: "0 0 24px",
+  },
+
+  footer: {},
+  footerText: {
+    color: "#a1a1aa",
+    fontSize: "12px",
+    margin: "0 0 8px",
+  },
+  footerUrl: {
+    color: "#a1a1aa",
+    fontSize: "11px",
+    lineHeight: "1.6",
+    margin: 0,
+  },
+  urlLink: {
+    color: "#71717a",
+    textDecoration: "underline",
+    wordBreak: "break-all",
+  },
+};

@@ -10,11 +10,11 @@ export async function sendResetEmail(email: string, resetUrl: string) {
   try {
     const emailHtml = await render(
       <PasswordResetEmail email={email} resetUrl={resetUrl} />,
-      { pretty: true }
+      { pretty: true },
     );
 
     const response = await resend.emails.send({
-      from: `${APP_NAME} <no-reply@polomalbullish-remi.com>`,
+      from: `${APP_NAME} <no-reply@driftfund.net>`,
       to: email,
       subject: `${APP_NAME} - Password Reset`,
       html: emailHtml,
@@ -37,7 +37,7 @@ export async function sendWelcomeEmail(email: string, username: string) {
   try {
     const emailHtml = await render(
       <WelcomeEmail email={email} username={username} />,
-      { pretty: true }
+      { pretty: true },
     );
 
     await resend.emails.send({

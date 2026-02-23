@@ -1,6 +1,7 @@
 import argon2 from "argon2";
 import { connectToDb } from "@/lib/dbConnect";
 import User from "@/models/User";
+import { sendWelcomeEmail } from "@/lib/email";
 
 export const POST = async (request: Request) => {
   try {
@@ -9,7 +10,7 @@ export const POST = async (request: Request) => {
     if (!data?.email || !data?.password || !data?.username || !data?.name) {
       return new Response(
         JSON.stringify({ message: "Missing required fields" }),
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -45,7 +46,7 @@ export const POST = async (request: Request) => {
     if (existingUserByUsername) {
       return new Response(
         JSON.stringify({ message: "Username already taken" }),
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -66,10 +67,12 @@ export const POST = async (request: Request) => {
 
     await newUser.save();
 
+    // Send welcome email
+    await sendWelcomeEmail(normalizedEmail, normalizedUsername);
+
     return new Response(
       JSON.stringify({
         message: "User registered successfully",
-
         user: {
           id: newUser._id,
           username: newUser.username,
@@ -77,7 +80,7 @@ export const POST = async (request: Request) => {
           name: newUser.name,
         },
       }),
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error: any) {
     console.error("Signup error:", error.message);
