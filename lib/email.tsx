@@ -5,6 +5,7 @@ import WelcomeEmail from "@/emails/WelcomeEmail";
 import { APP_NAME } from "./constants";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+const SENDER_EMAIL = process.env.SENDER_EMAIL as string;
 
 export async function sendResetEmail(email: string, resetUrl: string) {
   try {
@@ -14,7 +15,7 @@ export async function sendResetEmail(email: string, resetUrl: string) {
     );
 
     const response = await resend.emails.send({
-      from: `${APP_NAME} <no-reply@driftfund.net>`,
+      from: `${APP_NAME} <${SENDER_EMAIL}>`,
       to: email,
       subject: `${APP_NAME} - Password Reset`,
       html: emailHtml,
@@ -41,7 +42,7 @@ export async function sendWelcomeEmail(email: string, username: string) {
     );
 
     await resend.emails.send({
-      from: `${APP_NAME} <no-reply@polomalbullish-remi.com>`,
+      from: `${APP_NAME} <${SENDER_EMAIL}>`,
       to: email,
       subject: `Welcome to ${APP_NAME}!`,
       html: emailHtml,
